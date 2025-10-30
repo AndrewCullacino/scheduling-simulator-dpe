@@ -1,0 +1,6 @@
+run,task_id,arrival_time,processing_time,priority,deadline,start_time,completion_time,machine_id,met_deadline
+harder_starvation_Priority-First,LOW,0,6,LOW,18,0,6,0,True
+harder_starvation_Priority-First,H1,0,3,HIGH,25,6,9,0,True
+harder_starvation_Priority-First,H2,3,3,HIGH,28,9,12,0,True
+harder_starvation_Priority-First,H3,6,3,HIGH,31,9,12,0,True
+harder_starvation_Priority-First,H4,9,3,HIGH,34,12,15,0,True
