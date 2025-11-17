@@ -11,75 +11,75 @@ Heavy Load,Priority-First,7,4,3,4,3,7,100.0,100.0,100.0,13,7.14,4.25,13
 Heavy Load,DPE (α=0.5),7,4,3,4,3,7,100.0,100.0,100.0,13,7.14,4.25,13
 Heavy Load,DPE (α=0.7),7,4,3,4,3,7,100.0,100.0,100.0,13,7.14,4.25,13
 Heavy Load,DPE (α=0.9),7,4,3,4,3,7,100.0,100.0,100.0,13,7.14,4.25,13
-Starvation Test,SPT,7,5,2,5,2,7,100.0,100.0,100.0,8,3.29,1.0,8
-Starvation Test,EDF,7,5,2,5,2,7,100.0,100.0,100.0,8,3.29,1.0,8
-Starvation Test,Priority-First,7,5,2,5,2,7,100.0,100.0,100.0,8,3.29,1.0,8
-Starvation Test,DPE (α=0.5),7,5,2,5,2,7,100.0,100.0,100.0,8,3.29,1.0,8
-Starvation Test,DPE (α=0.7),7,5,2,5,2,7,100.0,100.0,100.0,8,3.29,1.0,8
-Starvation Test,DPE (α=0.9),7,5,2,5,2,7,100.0,100.0,100.0,8,3.29,1.0,8
+Starvation Test,SPT,7,5,2,5,2,7,100.0,100.0,100.0,10,4.14,2.2,10
+Starvation Test,EDF,7,5,2,5,2,7,100.0,100.0,100.0,10,4.14,2.2,10
+Starvation Test,Priority-First,7,5,2,5,2,7,100.0,100.0,100.0,10,4.14,2.2,10
+Starvation Test,DPE (α=0.5),7,5,2,5,2,7,100.0,100.0,100.0,10,4.14,2.2,10
+Starvation Test,DPE (α=0.7),7,5,2,5,2,7,100.0,100.0,100.0,10,4.14,2.2,10
+Starvation Test,DPE (α=0.9),7,5,2,5,2,7,100.0,100.0,100.0,10,4.14,2.2,10
 Batch Arrival,SPT,6,3,3,3,3,6,100.0,100.0,100.0,13,6.67,4.25,13
-Batch Arrival,EDF,6,3,3,3,3,6,100.0,100.0,100.0,14,7.0,4.75,14
-Batch Arrival,Priority-First,6,3,3,3,3,6,100.0,100.0,100.0,14,7.0,4.75,14
-Batch Arrival,DPE (α=0.5),6,3,3,3,3,6,100.0,100.0,100.0,14,7.0,4.75,14
-Batch Arrival,DPE (α=0.7),6,3,3,3,3,6,100.0,100.0,100.0,14,7.0,4.75,14
-Batch Arrival,DPE (α=0.9),6,3,3,3,3,6,100.0,100.0,100.0,14,7.0,4.75,14
+Batch Arrival,EDF,6,3,3,3,3,6,100.0,100.0,100.0,14,7.17,5.0,14
+Batch Arrival,Priority-First,6,3,3,3,3,6,100.0,100.0,100.0,14,7.17,5.0,14
+Batch Arrival,DPE (α=0.5),6,3,3,3,3,6,100.0,100.0,100.0,14,7.17,5.0,14
+Batch Arrival,DPE (α=0.7),6,3,3,3,3,6,100.0,100.0,100.0,14,7.17,5.0,14
+Batch Arrival,DPE (α=0.9),6,3,3,3,3,6,100.0,100.0,100.0,14,7.17,5.0,14
 Challenge 1: SPT vs EDF,SPT,4,4,0,3,0,3,75.0,0,75.0,7,3.75,1.5,7
-Challenge 1: SPT vs EDF,EDF,4,4,0,3,0,3,75.0,0,75.0,7,3.75,1.5,7
-Challenge 1: SPT vs EDF,Priority-First,4,4,0,3,0,3,75.0,0,75.0,7,3.75,1.5,7
-Challenge 1: SPT vs EDF,DPE (α=0.5),4,4,0,3,0,3,75.0,0,75.0,7,3.75,1.5,7
-Challenge 1: SPT vs EDF,DPE (α=0.7),4,4,0,3,0,3,75.0,0,75.0,7,3.75,1.5,7
-Challenge 1: SPT vs EDF,DPE (α=0.9),4,4,0,3,0,3,75.0,0,75.0,7,3.75,1.5,7
-Challenge 2: Starvation,SPT,6,4,2,4,2,6,100.0,100.0,100.0,7,3.17,1.25,7
-Challenge 2: Starvation,EDF,6,4,2,4,2,6,100.0,100.0,100.0,7,3.33,1.5,7
-Challenge 2: Starvation,Priority-First,6,4,2,4,2,6,100.0,100.0,100.0,7,3.17,1.25,7
-Challenge 2: Starvation,DPE (α=0.5),6,4,2,4,2,6,100.0,100.0,100.0,7,3.17,1.25,7
-Challenge 2: Starvation,DPE (α=0.7),6,4,2,4,2,6,100.0,100.0,100.0,7,3.17,1.25,7
-Challenge 2: Starvation,DPE (α=0.9),6,4,2,4,2,6,100.0,100.0,100.0,7,3.17,1.25,7
+Challenge 1: SPT vs EDF,EDF,4,4,0,4,0,4,100.0,0,100.0,7,5.25,4.5,7
+Challenge 1: SPT vs EDF,Priority-First,4,4,0,4,0,4,100.0,0,100.0,7,5.25,4.5,7
+Challenge 1: SPT vs EDF,DPE (α=0.5),4,4,0,4,0,4,100.0,0,100.0,7,5.25,4.5,7
+Challenge 1: SPT vs EDF,DPE (α=0.7),4,4,0,4,0,4,100.0,0,100.0,7,5.25,4.5,7
+Challenge 1: SPT vs EDF,DPE (α=0.9),4,4,0,4,0,4,100.0,0,100.0,7,5.25,4.5,7
+Challenge 2: Starvation,SPT,6,4,2,4,2,6,100.0,100.0,100.0,8,3.5,1.75,8
+Challenge 2: Starvation,EDF,6,4,2,4,2,6,100.0,100.0,100.0,7,3.67,2.0,7
+Challenge 2: Starvation,Priority-First,6,4,2,4,2,6,100.0,100.0,100.0,8,3.5,1.75,8
+Challenge 2: Starvation,DPE (α=0.5),6,4,2,4,2,6,100.0,100.0,100.0,8,3.5,1.75,8
+Challenge 2: Starvation,DPE (α=0.7),6,4,2,4,2,6,100.0,100.0,100.0,8,3.5,1.75,8
+Challenge 2: Starvation,DPE (α=0.9),6,4,2,4,2,6,100.0,100.0,100.0,8,3.5,1.75,8
 Challenge 3: Impossible,SPT,4,4,0,2,0,2,50.0,0,50.0,10,7.5,5.0,10
 Challenge 3: Impossible,EDF,4,4,0,2,0,2,50.0,0,50.0,10,7.5,5.0,10
 Challenge 3: Impossible,Priority-First,4,4,0,2,0,2,50.0,0,50.0,10,7.5,5.0,10
 Challenge 3: Impossible,DPE (α=0.5),4,4,0,2,0,2,50.0,0,50.0,10,7.5,5.0,10
 Challenge 3: Impossible,DPE (α=0.7),4,4,0,2,0,2,50.0,0,50.0,10,7.5,5.0,10
 Challenge 3: Impossible,DPE (α=0.9),4,4,0,2,0,2,50.0,0,50.0,10,7.5,5.0,10
-Challenge 4: Alpha Matters,SPT,5,3,2,3,2,5,100.0,100.0,100.0,7,3.4,1.33,7
-Challenge 4: Alpha Matters,EDF,5,3,2,3,2,5,100.0,100.0,100.0,6,3.4,1.33,6
-Challenge 4: Alpha Matters,Priority-First,5,3,2,3,2,5,100.0,100.0,100.0,7,3.4,1.33,7
-Challenge 4: Alpha Matters,DPE (α=0.5),5,3,2,3,2,5,100.0,100.0,100.0,7,3.4,1.33,7
-Challenge 4: Alpha Matters,DPE (α=0.7),5,3,2,3,2,5,100.0,100.0,100.0,7,3.4,1.33,7
-Challenge 4: Alpha Matters,DPE (α=0.9),5,3,2,3,2,5,100.0,100.0,100.0,7,3.4,1.33,7
+Challenge 4: Alpha Matters,SPT,5,3,2,3,2,5,100.0,100.0,100.0,7,3.8,2.0,7
+Challenge 4: Alpha Matters,EDF,5,3,2,3,2,5,100.0,100.0,100.0,7,4.0,2.33,7
+Challenge 4: Alpha Matters,Priority-First,5,3,2,3,2,5,100.0,100.0,100.0,7,3.8,2.0,7
+Challenge 4: Alpha Matters,DPE (α=0.5),5,3,2,3,2,5,100.0,100.0,100.0,7,3.8,2.0,7
+Challenge 4: Alpha Matters,DPE (α=0.7),5,3,2,3,2,5,100.0,100.0,100.0,7,3.8,2.0,7
+Challenge 4: Alpha Matters,DPE (α=0.9),5,3,2,3,2,5,100.0,100.0,100.0,7,3.8,2.0,7
 Challenge 5: Priority Inversion,SPT,3,2,1,0,1,1,0.0,100.0,33.33,13,8.67,6.5,13
 Challenge 5: Priority Inversion,EDF,3,2,1,0,1,1,0.0,100.0,33.33,13,9.0,7.0,13
 Challenge 5: Priority Inversion,Priority-First,3,2,1,0,1,1,0.0,100.0,33.33,13,9.0,7.0,13
 Challenge 5: Priority Inversion,DPE (α=0.5),3,2,1,0,1,1,0.0,100.0,33.33,13,9.0,7.0,13
 Challenge 5: Priority Inversion,DPE (α=0.7),3,2,1,0,1,1,0.0,100.0,33.33,13,9.0,7.0,13
 Challenge 5: Priority Inversion,DPE (α=0.9),3,2,1,0,1,1,0.0,100.0,33.33,13,9.0,7.0,13
-Extreme 1: Starvation Guaranteed,SPT,7,6,1,6,1,7,100.0,100.0,100.0,17,6.71,5.0,17
+Extreme 1: Starvation Guaranteed,SPT,7,6,1,6,0,6,100.0,0.0,85.71,17,4.14,2.0,17
 Extreme 1: Starvation Guaranteed,EDF,7,6,1,6,1,7,100.0,100.0,100.0,17,6.71,5.0,17
-Extreme 1: Starvation Guaranteed,Priority-First,7,6,1,6,1,7,100.0,100.0,100.0,17,6.71,5.0,17
-Extreme 1: Starvation Guaranteed,DPE (α=0.5),7,6,1,6,1,7,100.0,100.0,100.0,17,6.71,5.0,17
-Extreme 1: Starvation Guaranteed,DPE (α=0.7),7,6,1,6,1,7,100.0,100.0,100.0,17,6.71,5.0,17
-Extreme 1: Starvation Guaranteed,DPE (α=0.9),7,6,1,6,1,7,100.0,100.0,100.0,17,6.71,5.0,17
-Extreme 2: Alpha Critical,SPT,8,7,1,7,1,8,100.0,100.0,100.0,21,4.88,1.71,21
-Extreme 2: Alpha Critical,EDF,8,7,1,7,1,8,100.0,100.0,100.0,21,4.88,1.71,21
-Extreme 2: Alpha Critical,Priority-First,8,7,1,7,1,8,100.0,100.0,100.0,21,4.88,1.71,21
-Extreme 2: Alpha Critical,DPE (α=0.5),8,7,1,7,1,8,100.0,100.0,100.0,21,4.88,1.71,21
-Extreme 2: Alpha Critical,DPE (α=0.7),8,7,1,7,1,8,100.0,100.0,100.0,21,4.88,1.71,21
-Extreme 2: Alpha Critical,DPE (α=0.9),8,7,1,7,1,8,100.0,100.0,100.0,21,4.88,1.71,21
+Extreme 1: Starvation Guaranteed,Priority-First,7,6,1,6,0,6,100.0,0.0,85.71,17,4.14,2.0,17
+Extreme 1: Starvation Guaranteed,DPE (α=0.5),7,6,1,6,1,7,100.0,100.0,100.0,17,4.57,2.5,17
+Extreme 1: Starvation Guaranteed,DPE (α=0.7),7,6,1,6,0,6,100.0,0.0,85.71,17,4.14,2.0,17
+Extreme 1: Starvation Guaranteed,DPE (α=0.9),7,6,1,6,0,6,100.0,0.0,85.71,17,4.14,2.0,17
+Extreme 2: Alpha Critical,SPT,8,7,1,7,0,7,100.0,0.0,87.5,27,6.0,3.0,27
+Extreme 2: Alpha Critical,EDF,8,7,1,7,1,8,100.0,100.0,100.0,27,8.62,6.0,27
+Extreme 2: Alpha Critical,Priority-First,8,7,1,7,0,7,100.0,0.0,87.5,27,6.0,3.0,27
+Extreme 2: Alpha Critical,DPE (α=0.5),8,7,1,7,1,8,100.0,100.0,100.0,27,6.75,3.86,27
+Extreme 2: Alpha Critical,DPE (α=0.7),8,7,1,7,1,8,100.0,100.0,100.0,27,6.38,3.43,27
+Extreme 2: Alpha Critical,DPE (α=0.9),8,7,1,7,0,7,100.0,0.0,87.5,27,6.0,3.0,27
 Extreme 3: SPT Fails,SPT,4,4,0,3,0,3,75.0,0,75.0,12,5.25,1.5,12
-Extreme 3: SPT Fails,EDF,4,4,0,3,0,3,75.0,0,75.0,12,5.25,1.5,12
-Extreme 3: SPT Fails,Priority-First,4,4,0,3,0,3,75.0,0,75.0,12,5.25,1.5,12
-Extreme 3: SPT Fails,DPE (α=0.5),4,4,0,3,0,3,75.0,0,75.0,12,5.25,1.5,12
-Extreme 3: SPT Fails,DPE (α=0.7),4,4,0,3,0,3,75.0,0,75.0,12,5.25,1.5,12
-Extreme 3: SPT Fails,DPE (α=0.9),4,4,0,3,0,3,75.0,0,75.0,12,5.25,1.5,12
-Extreme 4: Multiple Starvation,SPT,9,6,3,6,3,9,100.0,100.0,100.0,12,3.0,0.43,12
-Extreme 4: Multiple Starvation,EDF,9,6,3,6,3,9,100.0,100.0,100.0,12,3.0,0.43,12
-Extreme 4: Multiple Starvation,Priority-First,9,6,3,6,3,9,100.0,100.0,100.0,12,3.0,0.43,12
-Extreme 4: Multiple Starvation,DPE (α=0.5),9,6,3,6,3,9,100.0,100.0,100.0,12,3.0,0.43,12
-Extreme 4: Multiple Starvation,DPE (α=0.7),9,6,3,6,3,9,100.0,100.0,100.0,12,3.0,0.43,12
-Extreme 4: Multiple Starvation,DPE (α=0.9),9,6,3,6,3,9,100.0,100.0,100.0,12,3.0,0.43,12
-Extreme 5: Priority-First Impossible,SPT,3,2,1,2,1,3,100.0,100.0,100.0,10,7.33,6.0,10
+Extreme 3: SPT Fails,EDF,4,4,0,4,0,4,100.0,0,100.0,10,7.5,6.0,10
+Extreme 3: SPT Fails,Priority-First,4,4,0,4,0,4,100.0,0,100.0,10,7.5,6.0,10
+Extreme 3: SPT Fails,DPE (α=0.5),4,4,0,4,0,4,100.0,0,100.0,10,7.5,6.0,10
+Extreme 3: SPT Fails,DPE (α=0.7),4,4,0,4,0,4,100.0,0,100.0,10,7.5,6.0,10
+Extreme 3: SPT Fails,DPE (α=0.9),4,4,0,4,0,4,100.0,0,100.0,10,7.5,6.0,10
+Extreme 4: Multiple Starvation,SPT,9,6,3,6,3,9,100.0,100.0,100.0,12,3.67,1.29,12
+Extreme 4: Multiple Starvation,EDF,9,6,3,6,3,9,100.0,100.0,100.0,12,4.33,2.14,12
+Extreme 4: Multiple Starvation,Priority-First,9,6,3,6,3,9,100.0,100.0,100.0,12,3.67,1.29,12
+Extreme 4: Multiple Starvation,DPE (α=0.5),9,6,3,6,3,9,100.0,100.0,100.0,12,3.67,1.29,12
+Extreme 4: Multiple Starvation,DPE (α=0.7),9,6,3,6,3,9,100.0,100.0,100.0,12,3.67,1.29,12
+Extreme 4: Multiple Starvation,DPE (α=0.9),9,6,3,6,3,9,100.0,100.0,100.0,12,3.67,1.29,12
+Extreme 5: Priority-First Impossible,SPT,3,2,1,2,0,2,100.0,0.0,66.67,10,5.67,3.5,10
 Extreme 5: Priority-First Impossible,EDF,3,2,1,2,1,3,100.0,100.0,100.0,10,7.67,6.5,10
-Extreme 5: Priority-First Impossible,Priority-First,3,2,1,2,1,3,100.0,100.0,100.0,10,7.67,6.5,10
-Extreme 5: Priority-First Impossible,DPE (α=0.5),3,2,1,2,1,3,100.0,100.0,100.0,10,7.67,6.5,10
-Extreme 5: Priority-First Impossible,DPE (α=0.7),3,2,1,2,1,3,100.0,100.0,100.0,10,7.67,6.5,10
-Extreme 5: Priority-First Impossible,DPE (α=0.9),3,2,1,2,1,3,100.0,100.0,100.0,10,7.67,6.5,10
+Extreme 5: Priority-First Impossible,Priority-First,3,2,1,2,0,2,100.0,0.0,66.67,10,6.0,4.0,10
+Extreme 5: Priority-First Impossible,DPE (α=0.5),3,2,1,2,0,2,100.0,0.0,66.67,10,6.0,4.0,10
+Extreme 5: Priority-First Impossible,DPE (α=0.7),3,2,1,2,0,2,100.0,0.0,66.67,10,6.0,4.0,10
+Extreme 5: Priority-First Impossible,DPE (α=0.9),3,2,1,2,0,2,100.0,0.0,66.67,10,6.0,4.0,10

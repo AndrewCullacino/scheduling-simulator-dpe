@@ -1,0 +1,138 @@
+% compile with XeLaTex or LuaLaTeX (this is due to selection of specific fonts)
+% on overleaf: Menu > Settings > Compiler
+
+\documentclass[final,hyperref={pdfpagelabels=false}]{beamer}
+\usepackage{tangocolors}
+\mode<presentation>
+{
+  %\usetheme{Berlin}
+  \usetheme{Algo}
+}
+\usepackage{amsmath,amsthm, amssymb, latexsym}
+\boldmath
+\usepackage[english]{babel}
+%\usepackage[utf8]{inputenc}
+\usepackage[orientation=portrait,size=a1,scale=1.4,debug]{beamerposter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%\graphicspath{{figures/}}
+
+\title{\LaTeX{} Template for COMP3821/9801 Posters with overflowing title}
+\author{group member 1 (zID1) \and group member 2 (zID2) \and group member 3 (zID3) \\ group member 4 (zID4) \and group member 5 (zID5) \and group member 6 (zID6)}
+\institute{Mentor: mentor name\\
+Group: group number}
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\begin{document}
+\begin{frame}{}
+  \vfill
+  \begin{columns}[t]
+    \begin{column}{.5\linewidth}
+      \begin{mybox}{Summary}
+        This is a \textbf{primary} color box.
+
+        \centering
+        {\tiny tiny}\par
+        {\scriptsize scriptsize}\par
+        {\footnotesize footnotesize}\par
+        {\normalsize normalsize}\par
+        {\large large}\par
+        {\Large Large}\par
+        {\LARGE LARGE}\par
+        {\huge huge}\par
+        {\Huge Huge}\par
+        {\veryHuge VeryHuge}\par
+        {\VeryHuge VeryHuge}\par
+        %{\VERYHuge VERYHuge}\par
+      \end{mybox}
+
+      \begin{myindigobox}{A regular box}
+        \begin{itemize}
+          \item \texttt{a monospace item}
+          \item some items
+          \item some items
+          \item some items
+        \end{itemize}
+      \end{myindigobox}
+
+      \begin{myredbox}{Pay attention!}
+        This is important.
+        \begin{itemize}
+          \item some inline maths $\alpha=\gamma, \sum_{i}$
+          \item and displayed maths
+        \end{itemize}
+        $$\alpha=\gamma, \sum_{i}$$
+      \end{myredbox}
+
+      \begin{mygreenbox}{Example}
+        This is an example.
+      \end{mygreenbox}
+
+      \begin{mypinkbox}{Theorem (My Amazing Theorem)}
+        This is not a poster.
+      \end{mypinkbox}
+      % also available: mytealbox, mybluebox, mypurplebox, myorangebox
+    \end{column}
+    \begin{column}{.5\linewidth}
+      \begin{mybox}{Introduction}
+        \begin{itemize}
+          \item some items and $\alpha=\gamma, \sum_{i}$
+          \item some items
+          \item some items
+          \item some items
+        \end{itemize}
+        $$\alpha=\gamma, \sum_{i}$$
+      \end{mybox}
+
+      \begin{mypinkbox}{Definition (circular definition)}
+        A \alert{circular definition} is a circular definition.
+      \end{mypinkbox}
+
+      \begin{mygreenbox}{Example}
+        \begin{itemize}
+          \item some items and $\alpha=\gamma, \sum_{i}$
+          \item some items
+          \item some items
+          \item some items
+        \end{itemize}
+        $$\alpha=\gamma, \sum_{i}$$
+      \end{mygreenbox}
+
+      \begin{myindigobox}{Note}
+        This is a note.
+      \end{myindigobox}
+
+      \begin{center}
+        % Petersen graph with a 3-coloring
+        \begin{tikzpicture}[scale=3]
+          \tikzstyle{vertex}=[circle,fill=black,inner sep=0mm,minimum size=3ex]
+          \node[vertex,fill=unsw@indigo]  (1) at (18:1cm) {};
+          \node[vertex,fill=unsw@green]  (2) at (90:1cm) {};
+          \node[vertex,fill=unsw@red]  (3) at (162:1cm) {};
+          \node[vertex,fill=unsw@red]  (4) at (234:1cm) {};
+          \node[vertex,fill=unsw@indigo]  (5) at (306:1cm) {};
+          \node[vertex,fill=unsw@green]  (6) at (18:2cm) {};
+          \node[vertex,fill=unsw@red]  (7) at (90:2cm) {};
+          \node[vertex,fill=unsw@green]  (8) at (162:2cm) {};
+          \node[vertex,fill=unsw@indigo]  (9) at (234:2cm) {};
+          \node[vertex,fill=unsw@red] (10) at (306:2cm) {};
+
+          \draw[line width=5pt,color=unsw@black] (1)--(3)--(5)--(2)--(4)--(1)
+          (6)--(7)--(8)--(9)--(10)--(6)
+          (1)--(6) (2)--(7) (3)--(8) (4)--(9) (5)--(10);
+        \end{tikzpicture}
+      \end{center}
+
+      \begin{mybox}{Conclusion}
+        This is the conclusion.
+
+      \end{mybox}
+      \begin{mybox}{References}
+
+      \end{mybox}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+\end{document}

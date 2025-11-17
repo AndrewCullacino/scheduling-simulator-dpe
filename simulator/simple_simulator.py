@@ -100,23 +100,30 @@ class Scheduler:
     def run(self):
         """Main simulation loop"""
         self.initialize()
-        
+
         while self.event_queue or self.ready_queue:
-            # Get next event
+            # Process ALL events at the current time before scheduling
             if self.event_queue:
                 event = heapq.heappop(self.event_queue)
                 self.current_time = event.time
-                
-                if event.type == 'ARRIVAL':
-                    self.ready_queue.append(event.task)
-                    print(f"⏰ Time {self.current_time:.1f}: Task {event.task.id} arrives")
-                
-                elif event.type == 'COMPLETION':
-                    event.machine.available_at = self.current_time
-                    event.task.completion_time = self.current_time
-                    self.completed_tasks.append(event.task)
-                    print(f"✅ Time {self.current_time:.1f}: Task {event.task.id} completes on Machine {event.machine.id}")
-            
+
+                # Collect all events at this time
+                events_at_current_time = [event]
+                while self.event_queue and self.event_queue[0].time == self.current_time:
+                    events_at_current_time.append(heapq.heappop(self.event_queue))
+
+                # Process all arrivals first, then completions
+                for evt in sorted(events_at_current_time, key=lambda e: (e.type != 'ARRIVAL', e.type)):
+                    if evt.type == 'ARRIVAL':
+                        self.ready_queue.append(evt.task)
+                        print(f"⏰ Time {self.current_time:.1f}: Task {evt.task.id} arrives")
+
+                    elif evt.type == 'COMPLETION':
+                        evt.machine.available_at = self.current_time
+                        evt.task.completion_time = self.current_time
+                        self.completed_tasks.append(evt.task)
+                        print(f"✅ Time {self.current_time:.1f}: Task {evt.task.id} completes on Machine {evt.machine.id}")
+
             # Try to schedule ready tasks on idle machines
             self.schedule_ready_tasks()
     

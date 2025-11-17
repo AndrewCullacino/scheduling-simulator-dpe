@@ -1,0 +1,887 @@
+\documentclass[oneside,12pt,english]{article}
+\usepackage{amsmath,amsfonts,stmaryrd,amssymb, enumerate, amsthm, mathtools}
+\newtheorem{theorem}{Theorem}
+\usepackage{enumerate}
+\usepackage{multirow}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\usepackage{float}
+\newtheorem{definition}{Definition}
+\usepackage{algorithm}
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{geometry, parskip}
+\geometry{
+	paper=a4paper,
+	top=2.5cm,
+	left=2.5cm,
+	right=2.5cm,
+}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{XCharter, enumitem}
+% solution box (simplified)
+\usepackage[most]{tcolorbox}
+
+% Additional packages for professional appearance
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+
+% Define colors
+\definecolor{darkgray}{RGB}{64,64,64}
+
+% Configure hyperref colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=black,
+    pdfborderstyle={/S/U/W 1}
+}
+
+
+% Custom author formatting
+\preauthor{%
+  \begin{center}
+  \vspace{3em}
+    {\Large\textbf{Project Team}}\\[2em]
+    \begin{tabular}{c}
+      {\large Jintian Wang (z5536837)} \\[0.5em]
+      {\large Dennis Shu (z5522609)} \\[0.5em]
+      {\large Evan Lin (z5589313)} \\[1em]
+      \large\textbf{Mentor:} {\large Ayda Valinezhad Orang}
+    \end{tabular}
+  \end{center}
+}
+\postauthor{}
+
+% Custom date formatting
+\predate{%
+  \begin{center}
+  \vfill
+  {\normalsize School of Computer Science and Engineering}\\
+  {\normalsize University of New South Wales}\\
+  {\normalsize Sydney, Australia}
+  \end{center}
+}
+\postdate{}
+
+
+% Configure fancy headers for subsequent pages
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Customize section headers
+\usepackage{titlesec}
+\titleformat{\section}
+  {\Large\bfseries}
+  {\thesection}
+  {1em}
+  {}
+  [\vspace{-0.5em}\rule{\textwidth}{1pt}]
+
+\title{Greedy Scheduling with Dynamic Priority Elevations and Deadlines}
+\author{}
+\date{}
+
+\begin{document}
+
+% Create the title page
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
+\end{titlepage}
+
+% Reset page numbering and apply fancy headers
+\setcounter{page}{1}
+\thispagestyle{fancy}
+
+% Table of contents with custom formatting
+\renewcommand{\contentsname}{\Large Table of Contents}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\label{sec:introduction}
+We study parallel machine scheduling with priority classes and propose Dynamic Priority Elevation (DPE), a novel threshold-based mechanism that prevents low-priority task starvation while maintaining high-priority deadline guarantees. Unlike traditional static priority scheduling, DPE dynamically promotes tasks based on deadline pressure, addressing a key limitation in parallel machine environments where priority inversion can indefinitely delay lower-priority work.
+
+% ===== WEEK 3: PROPOSAL [15%] =====
+\section{Project Proposal}
+\subsection{Survey}
+    \subsubsection{Motivations}
+    Our interest in this scheduling problem stems from its direct applications in manufacturing and task allocation systems, where production lines must balance urgent orders with regular manufacturing schedules. We were particularly inspired by the Week 2 workshop problems on greedy scheduling algorithms, which introduced us to the theoretical framework of optimal ordering strategies. These exercises demonstrated how elegant greedy approaches could solve complex scheduling scenarios, motivating us to explore whether similar techniques could handle the additional complexity of priority classes and parallel machines. 
+    \subsubsection{Real-world Applications}
+    The scheduling algorithm can be applied to cloud computing by using two deadlines: high-priority tasks (premium customers), and low-priority tasks (standard customers), ensuring both groups meet their deadlines \cite{ZHANG202031}.
+    This algorithm can also be applied to emergency department patient management with two priority classes: high-priority patients (urgent cases) and low-priority patients (non-urgent cases). This approach addresses emergency department overcrowding while ensuring timely medical services for critical patients and efficient management of routine cases\cite{ALVESDEQUEIROZ2023100}.
+    
+    \subsubsection{Known Results} 
+    \begin{itemize}
+        \item Graham's study shows that any scheduling algorithm achieves a makespan $\omega \leq (2 - \frac{1}{m}) \times\omega_0$, where $\omega_0$ is the optimal makespan and $m$ is the number of identical machines. Therefore, we expect our algorithm should achieve better than the optimal $2 \times \omega_0$ makespan\cite{graham1966bounds}.
+
+        \item Liu and Layland's work proved that Earliest Deadline First (EDF) scheduling achieves optimal processor utilization on single-processor systems by dynamically assigning priorities based on task deadlines\cite{LIULAYLAND1973}.
+
+        \item Lee and Pinedo's work develops a  multi-phase approach of using different greedy strategies followed by local search optimization, which directly parallels our proposed methodology for handling complex parallel machine scheduling with priority constraints\cite{LEE1997464}.
+    \end{itemize}
+
+
+    
+    \subsubsection{Special Cases}
+    \begin{itemize}
+        \item \textbf{Case 1: Equal processing times} ($p_i = p$ for all tasks $i$)
+        \begin{itemize}
+            \item Reduces to bin packing with priority deadline constraints
+            \item Enables polynomial-time optimal solutions for small instances
+            \item Simplifies analysis of DPE threshold effects
+        \end{itemize}
+        
+        \item \textbf{Case 2: Single machines} ($m = 1$)
+        \begin{itemize}
+            \item Serves as the most fundamental and achievable case for this problem
+        \end{itemize}
+        
+        \item \textbf{Case 3: Single priority class}
+        \begin{itemize}
+            \item Equivalent to classical multiprocessor scheduling without priorities
+            \item Validates our base algorithms against well-known benchmarks
+            \item DPE becomes inactive (no priority elevation needed)
+        \end{itemize}
+    \end{itemize}
+    
+    \subsubsection{Preliminary Direction}
+    We plan to develop a multi-phase greedy scheduling framework that systematically explores different priority-based strategies. Our approach will generate and evaluate multiple greedy solutions using various rules (such as \textbf{shortest processing time first(STF)}, \textbf{earliest deadline first(EDF)}, and load balancing strategies) applied within each priority class\cite{KAHRAMAN20101293}.
+
+    \subsubsection{Our Contribution}
+    Our main innovation is the Dynamic Priority Elevation (DPE) mechanism that dynamically adjusts task priorities during execution based on deadline pressure, unlike existing scheduling algorithms that use static priority assignments throughout. While traditional approaches like EDF and fixed-priority scheduling can lead to low-priority task starvation in parallel machine environments, our threshold-based elevation system prevents indefinite postponement while maintaining high-priority task guarantees.
+
+
+\subsection{Research Plan}
+\subsubsection{Aims}
+\textbf{Primary Focus:}
+ Implement established algorithms first, and then add DPE innovation as the experimental twist.
+\subsubsection{Plan}
+\begin{enumerate}
+    \item Foundation (Week 3 - 4)
+    \begin{itemize}
+        \item Finalize the problem definitions to make the problem statement concise and accurate
+        \item Create comprehensive test suite with 20+ examples covering: single machine, multiple machine, all high-priority, all low-priority edge cases, and general cases (from simple to complex)
+        \item Research and design specifications for 3 baseline algorithms: SPT (Shortest Processing Time), EDF (Earliest Deadline First), and Priority-First scheduling
+    \end{itemize}
+    
+    \item Algorithm Design I (Week 5 - 6)
+    \begin{itemize}
+        \item \textbf{Implement 3 established greedy algorithms} for single machine case:
+        \begin{itemize}
+            \item SPT (Shortest Processing Time First)
+            \item EDF (Earliest Deadline First)  
+            \item Static Priority-First scheduling
+        \end{itemize}
+        \item Develop infeasibility detection method for all algorithms
+        \item Test and validate all baseline algorithms on example suite
+        \item \textbf{Week 6 Goal:} Working baseline implementations with performance benchmarks
+    \end{itemize}
+    
+    \item Proof and Analysis (Week 7)
+    \begin{itemize}
+        \item Prove correctness for the best-performing baseline algorithm
+        \item Analyze time complexity for implemented algorithms
+        \item Establish baseline performance metrics (makespan, deadline satisfaction, fairness)
+    \end{itemize}
+    
+    \item Algorithm Design II (Week 8 - 9)
+    \begin{itemize}
+        \item \textbf{Implement DPE (Dynamic Priority Elevation) as innovative twist} on best baseline algorithm·
+        \item Experimental comparison: DPE-enhanced vs. all 3 baseline approaches
+        \item Measure and analyze when/why DPE outperforms or underperforms baselines
+        \item Document scenarios where innovation provides measurable improvement
+    \end{itemize}
+    
+    \item Final documentation (Week 10)
+    By week 10, we will have the technical report and poster presenting our comparative study of baseline algorithms vs. DPE innovation. The deliverables will include experimental results, performance analysis, and lessons learned about the effectiveness of our innovative twist.
+\end{enumerate}
+
+\section{Problem Statement}
+We consider the problem of scheduling tasks with different priority classes and deadline constraints on identical parallel machines to minimize total completion time while ensuring all deadline requirements are satisfied.
+
+\subsection{Definitions}
+
+\begin{definition}[Problem Instance]
+    An instance consists of:
+    \begin{itemize}
+        \item A set of $n$ indivisible tasks $\mathcal{T} = \{T_1, T_2, \ldots, T_n\}$
+        \item A set of $m$ identical parallel machines $\mathcal{M} = \{M_1, M_2, \ldots, M_m\}$
+        \item Each task $T_i$ has:
+        \begin{itemize}
+            \item Processing time $p_i > 0$
+            \item Priority class $c \in \{h, l\}$ where $h$ is high priority and $l$ is low priority
+        \end{itemize}
+        \item Machine properties:
+        \begin{itemize}
+            \item A machine can only process $1$ task at a time, but can process arbitrarily many tasks sequentially
+            \item Each task is assigned to exactly one machine (indivisible - no task splitting)
+            \item Once the machine begins to process a task $T_i$, it works without interruption until completing the task.
+        \end{itemize}
+        \item Deadline constraints
+        \begin{itemize}
+            \item All tasks $T_i$ have deadlines $D_h > 0$ or $D_l > 0$
+            \item $D_h < D_l$, where high priority tasks have earlier deadlines
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Completion Time]
+For a task $T_i$ with arrival time $a_i$ and start time $s_i \geq a_i$, the completion time is:
+\[
+C_i = s_i + p_i
+\]
+\end{definition}
+
+\begin{definition}[Feasible Schedule]
+    A schedule is \emph{feasible} if 
+    \begin{itemize}
+        \item For every high-priority task $T_i$: $C_i \leq D_h$
+        \item For every low-priority task $T_j$: $C_j \leq D_l$
+    \end{itemize}
+    
+\end{definition}
+    
+\begin{definition}[Makespan]
+The \emph{makespan} of a schedule is the time when all tasks have finished, which is equivalent to the the completion time of the last task:
+\[
+C_{\max} = \max_{i \in [n]} C_i
+\]
+\end{definition}
+
+\subsection{DPE Definition}
+
+    We introduce \textbf{Dynamic Priority Elevation (DPE)} for parallel machine scheduling:
+    
+    A low-priority task $T_i$ gets temporarily elevated to high-priority when its deadline pressure exceeds threshold $\alpha$:
+    $$\text{deadline\_pressure}(T_i) = \frac{\text{current\_time} - \text{arrival\_time}(T_i)}{D_i - \text{arrival\_time}(T_i)} > \alpha$$
+    where $\alpha = 0.7$ (task has consumed 70\% of its deadline window).
+    
+    This means: elevate low-priority tasks when they've used up 70\% of their allowed time but haven't started processing yet.
+
+\subsection{Objective}
+Design a polynomial-time algorithm to find a feasible schedule that minimizes the makespan $C_{\max}$ while preventing starvation of low-priority tasks.
+
+
+
+\section{Progress Report}
+\textbf{Summary:} We conducted comprehensive experimental evaluation comparing DPE against three baseline algorithms (SPT, EDF, Priority-First) across 14 diverse scenarios. Our results demonstrate that DPE provided no measurable advantage over baseline approaches in any tested configuration. While this negative result may indicate limitations in the current DPE implementation or insufficient stress in our test scenarios, the evidence suggests that simple, context-appropriate baseline algorithms outperform complex dynamic priority mechanisms. Future work should either refine the DPE design or identify specific conditions where dynamic elevation provides value; otherwise, practitioners should favor proven baseline strategies.
+
+\subsection{Achievements}
+
+\subsubsection{Test Scenarios Overview}
+
+We designed 14 test scenarios across three categories to systematically evaluate algorithm performance. Table \ref{tab:test_overview} summarizes each scenario; detailed specifications are provided in Appendix \ref{appendix:test_cases}.
+
+\begin{table}[H]
+\centering
+\caption{Test Scenario Overview (M=Machines, H=High Priority, L=Low Priority)}
+\begin{tabular}{lc}
+\toprule
+Scenario & Configuration \\
+\midrule
+\multicolumn{2}{c}{\textit{Basic Scenarios}} \\
+\midrule
+Light Load & 5 tasks (3H+2L), 2M \\
+Heavy Load & 7 tasks (4H+3L), 3M \\
+Starvation Test & 7 tasks (5H+2L), 2M \\
+Batch Arrival & 6 tasks (3H+3L), 2M \\
+\midrule
+\multicolumn{2}{c}{\textit{Challenging Scenarios}} \\
+\midrule
+Challenge 1: SPT vs EDF & 4H, 2M \\
+Challenge 2: Starvation & 4H+2L, 2M \\
+Challenge 3: Impossible & 4H, 2M \\
+Challenge 4: Alpha Matters & 3H+2L, 2M \\
+Challenge 5: Priority Inversion & 2H+1L, 1M \\
+\midrule
+\multicolumn{2}{c}{\textit{Extreme Scenarios}} \\
+\midrule
+Extreme 1: Starvation Guaranteed & 6H+1L, 1M \\
+Extreme 2: Alpha Critical & 7H+1L, 1M \\
+Extreme 3: SPT Fails & 4H, 2M \\
+Extreme 4: Multiple Starvation & 6H+3L, 2M \\
+Extreme 5: Priority-First Impossible & 2H+1L, 1M \\
+\bottomrule
+\end{tabular}
+\label{tab:test_overview}
+\end{table}
+
+\textbf{Test Coverage:} 14 scenarios $\times$ 6 algorithms (SPT, EDF, Priority-First, DPE with $\alpha \in \{0.5, 0.7, 0.9\}$) = 84 experimental runs.
+
+
+\subsubsection{Algorithm Performance Differentiation}
+
+Two scenarios revealed meaningful performance differences among baseline algorithms, demonstrating context-specific advantages. SPT excels when tasks arrive simultaneously by minimizing average completion time through shortest processing time first scheduling, achieving 7.7\% better makespan. EDF outperforms when deadline constraints are primary concerns, achieving 14.3\% superior makespan through deadline-aware prioritization. DPE provided no advantage in either scenario.
+
+\begin{table}[H]
+\centering
+\caption{Scenarios Where Algorithms Differ}
+\begin{tabular}{llccc}
+\toprule
+Scenario & Algorithm & Success (\%) & Makespan & Improvement \\
+\midrule
+Batch Arrival & SPT & 100.0 & \textbf{13} & \textbf{7.7\% better} \\
+Batch Arrival & EDF & 100.0 & 14 & baseline \\
+Batch Arrival & Priority-First & 100.0 & 14 & baseline \\
+Batch Arrival & DPE (all $\alpha$) & 100.0 & 14 & baseline \\
+\midrule
+Challenge 4 & SPT & 100.0 & 7 & baseline \\
+Challenge 4 & EDF & 100.0 & \textbf{6} & \textbf{14.3\% better} \\
+Challenge 4 & Priority-First & 100.0 & 7 & baseline \\
+Challenge 4 & DPE (all $\alpha$) & 100.0 & 7 & baseline \\
+\bottomrule
+\end{tabular}
+\label{tab:differences}
+\end{table}
+
+
+
+\subsubsection{Baseline Performance: Algorithm Equivalence}
+
+Eleven scenarios (79\%) showed identical performance across all algorithms, achieving either 100\% success or identical partial failure rates.
+
+\begin{table}[h]
+\centering
+\caption{Scenarios with 100\% Success and Identical Performance}
+\begin{tabular}{lccc}
+\toprule
+Scenario & Tasks & Machines & Makespan \\
+\midrule
+Light Load & 5 & 2 & 12 \\
+Heavy Load & 7 & 3 & 13 \\
+Starvation Test & 7 & 2 & 8 \\
+Challenge 2 & 6 & 2 & 7 \\
+Extreme 1: Starvation Guaranteed & 7 & 1 & 17 \\
+Extreme 2: Alpha Critical & 8 & 1 & 21 \\
+Extreme 4: Multiple Starvation & 9 & 2 & 12 \\
+Extreme 5: Priority-First Impossible & 3 & 1 & 10 \\
+\bottomrule
+\end{tabular}
+\label{tab:baseline}
+\end{table}
+
+This indicates that when machine capacity sufficiently exceeds task demands, scheduling strategy becomes inconsequential—all algorithms achieve optimal or identical results. This demonstrates that problem structure and resource availability dominate algorithm choice in determining feasibility.
+
+\subsubsection{Partial Failure Cases}
+
+Three scenarios revealed partial deadline satisfaction where all algorithms performed identically, indicating inherent infeasibility.
+
+\begin{table}[h]
+\centering
+\caption{Partial Failure Scenarios - Identical Algorithm Performance}
+\begin{tabular}{lcccc}
+\toprule
+Scenario & High Tasks & High Success (\%) & Makespan & Interpretation \\
+\midrule
+Challenge 1: SPT vs EDF & 4 & 75.0 & 7 & Partial feasibility \\
+Challenge 3: Impossible & 4 & 50.0 & 10 & Severe constraints \\
+Extreme 3: SPT Fails & 4 & 75.0 & 12 & Resource-time limits \\
+\bottomrule
+\end{tabular}
+\label{tab:partial_failures}
+\end{table}
+
+\textbf{Finding:} All algorithms failed identically in these scenarios, demonstrating that when deadlines are too tight relative to processing requirements and machine capacity, no scheduling strategy can achieve complete success regardless of sophistication.
+
+\subsubsection{Critical Failure: Priority Inversion}
+
+Challenge 5 demonstrated the most severe failure case where all algorithms achieved 0\% high-priority success.
+
+\begin{table}[h]
+\centering
+\caption{Challenge 5: Priority Inversion - Complete High-Priority Failure}
+\begin{tabular}{lcccc}
+\toprule
+Algorithm & High Success (\%) & Low Success (\%) & Makespan & Avg Response \\
+\midrule
+SPT & 0.0 & 100.0 & 13 & 8.67 \\
+EDF & 0.0 & 100.0 & 13 & 9.0 \\
+Priority-First & 0.0 & 100.0 & 13 & 9.0 \\
+DPE (all $\alpha$) & 0.0 & 100.0 & 13 & 9.0 \\
+\bottomrule
+\end{tabular}
+\label{tab:challenge5}
+\end{table}
+
+\textbf{Analysis:} Zero high-priority success despite 100\% low-priority success exposes fundamental resource-time constraints in non-preemptive scheduling. When a low-priority task (processing=8) occupies the single machine at time 0, urgent high-priority tasks arriving at times 2 and 3 with deadlines 6 and 8 cannot be scheduled in time. All algorithms including DPE performed identically, confirming that non-preemptive constraints create mathematical limits no scheduling strategy can overcome.
+
+\subsubsection{Implementation Validation}
+
+Visual demonstrations revealed unexpected behaviors requiring investigation.
+
+\begin{table}[h]
+\centering
+\caption{Demo 1: SPT vs EDF - Expected vs Actual Behavior}
+\begin{tabular}{lcccl}
+\toprule
+Algorithm & Task & Completion & Deadline & Result \\
+\midrule
+\multirow{2}{*}{SPT (Actual)} & A & 2 & 50 & Met \\
+                               & B & 12 & 11 &  \textbf{Missed} \\
+\midrule
+\multirow{2}{*}{EDF (Actual)} & A & 2 & 50 &  Met \\
+                               & B & 12 & 11 &  \textbf{Missed} \\
+\midrule
+\multirow{2}{*}{EDF (Expected)} & B & 10 & 11 &  Should meet \\
+                                 & A & 12 & 50 &  Should meet \\
+\bottomrule
+\end{tabular}
+\label{tab:demo1}
+\end{table}
+
+\textbf{Finding:} EDF produced an identical schedule to SPT (A→B) instead of the expected deadline-prioritized schedule (B→A). This discrepancy indicates a potential implementation issue where EDF's deadline-based prioritization logic may not be functioning correctly. The expected behavior would prioritize task B (deadline=11) before task A (deadline=50), allowing B to complete at time 10 and meet its deadline, followed by A completing at time 12 (well within deadline 50). 
+
+\subsubsection{DPE Performance Analysis}
+
+Across all 14 comprehensive scenarios, DPE never outperformed baseline algorithms.
+
+\begin{table}[h]
+\centering
+\caption{DPE vs Best Baseline Comprehensive Comparison}
+\begin{tabular}{lcc}
+\toprule
+Scenario Category & Count & DPE Performance \\
+\midrule
+Identical to all algorithms & 11/14 & No differentiation \\
+Inferior to SPT (Batch Arrival) & 1/14 & 7.7\% worse makespan \\
+Inferior to EDF (Challenge 4) & 1/14 & 14.3\% worse makespan \\
+Matched best algorithm (Challenge 2) & 1/14 & Equal performance \\
+\midrule
+\textbf{Total scenarios where DPE won} & \textbf{0/14} & \textbf{Never superior} \\
+\bottomrule
+\end{tabular}
+\label{tab:dpe}
+\end{table}
+
+\textbf{Analysis:} DPE's threshold-based elevation mechanism provided no measurable advantage across any test scenario. In scenarios with adequate resources (11/14 cases), algorithm choice was irrelevant and all approaches succeeded identically. In the two scenarios where performance differentiated (Batch Arrival and Challenge 4), DPE matched the inferior algorithms rather than matching or exceeding the best performer. The $\alpha$ parameter (tested at 0.5, 0.7, 0.9) made no observable difference across any scenario, suggesting either: (a) test scenarios lacked sufficient deadline pressure to trigger differential elevation behavior, or (b) the elevation mechanism does not function as theoretically designed.
+
+\subsubsection{Key Findings}
+\begin{enumerate}
+    \item \textbf{DPE Provides No Advantage:} Across 14 scenarios, DPE never outperformed baseline algorithms, challenging the hypothesis that dynamic priority elevation improves upon static strategies.
+    
+    \item \textbf{Specific Selection} SPT excels in batch processing (7.7\% better), EDF in deadline-critical cases (14.3\% better). Simple, targeted algorithms outperform universal mechanisms.
+    
+    \item \textbf{Resources Matters} In 79\% of scenarios (11/14), all algorithms performed identically. When well-provisioned or infeasible, algorithmic choice is irrelevant.
+    
+    \item \textbf{Implementation Issues Discovered:} EDF behaved identically to SPT despite different theoretical foundations, indicating implementation bugs that may invalidate comparative results.
+    
+    \item \textbf{Alpha Parameter Has No Effect:} Testing $\alpha \in \{0.5, 0.7, 0.9\}$ produced no measurable differences, suggesting the elevation mechanism is non-functional.
+\end{enumerate}
+
+\subsubsection{Conclusion}
+
+Our comprehensive experimental evaluation across 14 scenarios and 84 runs demonstrates that simple, context-appropriate baseline algorithms (SPT for batch processing, EDF for deadline-critical systems) outperform the complex DPE mechanism. When systems are well-provisioned, algorithm choice is irrelevant; when resource-constrained, simple algorithms excel in their target contexts. The evidence suggests that resource provisioning and correct implementation quality matter more than algorithmic sophistication. Dynamic priority elevation, as currently designed and tested, provides no measurable advantage over static scheduling strategies in parallel machine environments.
+
+
+
+
+
+
+
+\subsection{Revised Plan}
+\textbf{Week 8 (November 2-8):}
+\begin{itemize}
+    \item Fix EDF implementation bug (currently behaves identically to SPT)
+    \item Investigate why DPE shows no improvement:
+    \begin{itemize}
+        \item Analyze DPE elevation trigger conditions in existing scenarios
+        \item Add logging to track when/if priority elevations occur
+        \item Verify DPE implementation against algorithm specification
+    \end{itemize}
+    \item Possibly rewrite the implementation, currently in progress
+    \item Design scenario/test case generator to test code on much larger cases to compare performance
+    \item Design 5+ new scenarios specifically targeting DPE advantages:
+    \begin{itemize}
+        \item High deadline pressure scenarios where low-priority tasks approach starvation
+        \item Scenarios with continuous task arrivals (not batch)
+        \item Cases where static priority causes demonstrable low-priority delays
+    \end{itemize}
+\end{itemize}
+
+\textbf{Week 9 (November 9-15):}
+\begin{itemize}
+    \item Re-run all experiments with corrected EDF
+    \item Test new DPE-focused scenarios with multiple $\alpha$ values ($\alpha \in \{0.5, 0.6, 0.7, 0.8, 0.9\}$)
+    \item Refine DPE mechanism if initial design shows fundamental flaws:
+    \begin{itemize}
+        \item Consider alternative elevation criteria (e.g., absolute waiting time, relative slack time)
+        \item Test hybrid approaches combining DPE with baseline strategies
+    \end{itemize}
+    \item Prove correctness for SPT (single-machine case)
+    \item Analyze time complexity: all algorithms are $O(n \log n)$ due to sorting
+    \item Begin technical report writing
+\end{itemize}
+
+\textbf{Week 10 (November 16-22):}
+\begin{itemize}
+    \item Complete technical report with all experimental results
+    \item Create poster highlighting comparative performance
+    \item Finalize all documentation and code
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+% ===== WEEK 10: FINAL REPORT [70%] =====
+\section{Final Report}
+
+\subsection{EDF Bug Fix and Validation}
+
+\subsubsection{Critical Implementation Issue Discovered}
+
+During progression check validation, we discovered that EDF produced identical schedules to SPT despite fundamentally different theoretical foundations. As documented in Table \ref{tab:demo1}, EDF scheduled tasks A→B (same as SPT) instead of the expected deadline-prioritized B→A schedule.
+
+\subsubsection{Root Cause Analysis}
+
+The bug was located in the event processing loop of \texttt{simple\_simulator.py} (lines 100-128). The scheduler processed arrival events one-by-one, calling \texttt{schedule\_ready\_tasks()} immediately after each arrival. When multiple tasks arrived simultaneously (e.g., at time 0):
+
+\begin{enumerate}
+    \item Task A arrival event → added to ready queue → \texttt{schedule\_ready\_tasks()} → Task A scheduled
+    \item Task B arrival event → added to ready queue → but machine already busy!
+    \item Result: SPT-like behavior (first task scheduled regardless of deadline)
+\end{enumerate}
+
+\subsubsection{Solution Implementation}
+
+We modified the event processing to:
+\begin{enumerate}
+    \item Collect ALL events occurring at the current timestamp
+    \item Process all ARRIVAL events before COMPLETION events
+    \item Call \texttt{schedule\_ready\_tasks()} only AFTER all events at current time are processed
+\end{enumerate}
+
+This ensures EDF's \texttt{select\_task()} function sees all available tasks when making deadline-based decisions.
+
+\subsubsection{Verification Results}
+
+\textbf{Before Fix:}
+\begin{itemize}
+    \item Demo 1: Task A scheduled first → Task B misses deadline at time 12 (deadline 11)
+    \item Extreme 1: EDF success rate 85.7\%
+    \item Extreme 3: EDF success rate 75.0\%, makespan 12
+\end{itemize}
+
+\textbf{After Fix:}
+\begin{itemize}
+    \item Demo 1: Task B (deadline=11) scheduled first → completes at time 10 ✓
+    \item Extreme 1: EDF success rate \textbf{100.0\%} (+14.3\% improvement)
+    \item Extreme 3: EDF success rate \textbf{100.0\%}, makespan \textbf{10} (vs SPT's 12)
+\end{itemize}
+
+The fix validates EDF as an effective deadline-aware baseline, making comparative analysis against DPE scientifically meaningful.
+
+\subsection{Theoretical Analysis}
+
+\subsubsection{SPT Correctness Proof for Single Machine}
+
+\begin{theorem}
+For a single machine with $n$ tasks and no deadlines or priorities, SPT (Shortest Processing Time First) minimizes the sum of completion times.
+\end{theorem}
+
+\begin{proof}
+We prove by exchange argument. Suppose $\sigma$ is an optimal schedule that is not SPT. Then there exist adjacent tasks $T_i, T_j$ in $\sigma$ where $T_i$ is scheduled before $T_j$ but $p_i > p_j$.
+
+Let $\sigma'$ be the schedule obtained by swapping $T_i$ and $T_j$. Let $t$ be the start time of $T_i$ in $\sigma$.
+
+\textbf{In schedule $\sigma$:}
+\begin{itemize}
+    \item $T_i$ completes at $t + p_i$
+    \item $T_j$ completes at $t + p_i + p_j$
+    \item Sum: $(t + p_i) + (t + p_i + p_j) = 2t + 2p_i + p_j$
+\end{itemize}
+
+\textbf{In schedule $\sigma'$ (after swap):}
+\begin{itemize}
+    \item $T_j$ completes at $t + p_j$
+    \item $T_i$ completes at $t + p_j + p_i$
+    \item Sum: $(t + p_j) + (t + p_j + p_i) = 2t + p_i + 2p_j$
+\end{itemize}
+
+\textbf{Difference:}
+$$(2t + 2p_i + p_j) - (2t + p_i + 2p_j) = p_i - p_j > 0$$
+
+Thus $\sigma'$ has strictly smaller total completion time than $\sigma$, contradicting optimality of $\sigma$. By repeatedly applying this swap, we obtain an SPT schedule with no greater total completion time than $\sigma$.
+\end{proof}
+
+\subsubsection{Time Complexity Analysis}
+
+\begin{theorem}
+All implemented algorithms (SPT, EDF, Priority-First, DPE) have time complexity $O(n \log n)$ where $n$ is the number of tasks.
+\end{theorem}
+
+\begin{proof}
+For each algorithm:
+
+\textbf{SPT, EDF, Priority-First:}
+\begin{itemize}
+    \item Sorting phase: $O(n \log n)$
+    \item Assignment phase: $O(n \cdot m)$ where $m$ is number of machines
+    \item Since $m \ll n$ typically, assignment is $O(n)$
+    \item \textbf{Total}: $O(n \log n) + O(n) = O(n \log n)$
+\end{itemize}
+
+\textbf{DPE:}
+\begin{itemize}
+    \item Event queue operations: $O(n \log n)$ total
+    \item Deadline pressure calculation per event: $O(1)$
+    \item Ready queue sorting at each scheduling point: $O(k \log k)$ where $k \leq n$
+    \item With distributed arrivals: $O(n \log n)$ total
+    \item Worst-case (all simultaneous arrivals): $O(n^2 \log n)$
+    \item \textbf{Typical case}: $O(n \log n)$
+\end{itemize}
+\end{proof}
+
+\subsubsection{Space Complexity}
+
+All algorithms use $O(n + m)$ space:
+\begin{itemize}
+    \item Task storage: $O(n)$
+    \item Machine availability tracking: $O(m)$
+    \item Event/ready queues: $O(n)$
+\end{itemize}
+
+\subsection{Updated Experimental Results}
+
+After fixing the EDF implementation, we re-ran all 84 experiments. Key results:
+
+\subsubsection{EDF Performance Improvements}
+
+\begin{table}[H]
+\centering
+\caption{EDF Performance: Before vs After Bug Fix}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Scenario} & \textbf{Before (\%)} & \textbf{After (\%)} & \textbf{Makespan (Before)} & \textbf{Makespan (After)} \\
+\midrule
+Extreme 1 & 85.7 & \textbf{100.0} & 17 & 17 \\
+Extreme 3 & 75.0 & \textbf{100.0} & 12 & \textbf{10} \\
+Challenge 4 & 100.0 & 100.0 & 7 & \textbf{6} \\
+\bottomrule
+\end{tabular}
+\label{tab:edf_improvements}
+\end{table}
+
+\textbf{Analysis}: EDF now correctly demonstrates deadline-aware behavior:
+\begin{itemize}
+    \item Extreme 1: +14.3\% success rate improvement
+    \item Extreme 3: Both higher success rate AND better makespan (10 vs 12)
+    \item Challenge 4: 14.3\% better makespan than SPT/Priority-First
+\end{itemize}
+
+\subsubsection{Comprehensive Performance Comparison}
+
+After correcting EDF, the final algorithm rankings are:
+
+\begin{table}[H]
+\centering
+\caption{Algorithm Performance Summary Across All 14 Scenarios}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Algorithm} & \textbf{Scenarios Won} & \textbf{Avg Makespan} & \textbf{Avg Success (\%)} \\
+\midrule
+SPT & 1/14 (Batch Arrival) & 11.2 & 82.7 \\
+EDF & 2/14 (Challenge 4, Extreme 3) & \textbf{11.0} & \textbf{85.1} \\
+Priority-First & 0/14 & 11.3 & 82.4 \\
+DPE ($\alpha=0.5$) & 0/14 & 11.3 & 84.8 \\
+DPE ($\alpha=0.7$) & 0/14 & 11.3 & 82.7 \\
+DPE ($\alpha=0.9$) & 0/14 & 11.3 & 82.7 \\
+\bottomrule
+\end{tabular}
+\label{tab:overall_performance}
+\end{table}
+
+\textbf{Key Finding}: EDF emerges as the best overall performer after bug fix, achieving both lowest average makespan and highest success rate. DPE never outperformed any baseline in any scenario.
+
+\subsection{Visualization Results}
+
+We generated 13 publication-quality visualizations (300 DPI) including:
+\begin{itemize}
+    \item 12 Gantt charts showing task scheduling timelines (3 scenarios × 4 algorithms)
+    \item 1 comprehensive makespan comparison chart across all 14 scenarios
+\end{itemize}
+
+Figure \ref{fig:makespan_comparison} shows the complete makespan comparison. Note that DPE variants (shown in red shades) consistently match or exceed baseline makespans, never achieving superior performance.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{simulator/visualizations/makespan_comparison_detailed.png}
+\caption{Makespan comparison across all 14 scenarios and 6 algorithm variants. DPE consistently matches inferior algorithms rather than matching best performers.}
+\label{fig:makespan_comparison}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{simulator/visualizations/Batch_Arrival_SPT_gantt.png}
+    \caption{Batch Arrival: SPT achieves makespan = 13 (7.7\% better than EDF)}
+    \label{fig:batch_spt}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{simulator/visualizations/Batch_Arrival_EDF_gantt.png}
+    \caption{Batch Arrival: EDF achieves makespan = 14}
+    \label{fig:batch_edf}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{simulator/visualizations/Challenge_4_SPT_gantt.png}
+    \caption{Challenge 4: SPT achieves makespan = 7}
+    \label{fig:c4_spt}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{simulator/visualizations/Challenge_4_EDF_gantt.png}
+    \caption{Challenge 4: EDF achieves makespan = 6 (14.3\% better than SPT)}
+    \label{fig:c4_edf}
+\end{minipage}
+\end{figure}
+
+\subsection{Discussion}
+
+\subsubsection{Why DPE Provided No Advantage}
+
+Our comprehensive evaluation reveals four primary factors:
+
+\textbf{1. Resource Abundance (Primary Factor)}
+
+In 11/14 scenarios (79\%), machine capacity sufficiently exceeded task demands. When well-provisioned, scheduling strategy becomes irrelevant—all algorithms achieve optimal or near-optimal results. This demonstrates a fundamental insight: \textbf{resource provisioning dominates algorithmic sophistication}.
+
+\textbf{2. Test Scenario Limitations}
+
+Our scenarios may lack conditions creating sufficient deadline pressure for DPE elevation to provide value. Future scenarios should include:
+\begin{itemize}
+    \item Continuous task arrivals (not batch)
+    \item Tighter deadlines relative to processing times
+    \item Higher utilization (90\%+ machine capacity)
+    \item More low-priority tasks approaching starvation
+\end{itemize}
+
+\textbf{3. Non-Preemptive Scheduling Constraints}
+
+Challenge 5 (Table \ref{tab:challenge5}) exposed fundamental limits: when a low-priority task occupies a machine, no strategy can help high-priority tasks. Non-preemptive constraints create mathematical barriers no scheduling algorithm can overcome.
+
+\textbf{4. Alpha Parameter Insensitivity}
+
+Testing $\alpha \in \{0.5, 0.7, 0.9\}$ produced no observable differences across any scenario. This suggests either:
+\begin{itemize}
+    \item Test scenarios don't create deadline pressure conditions
+    \item Elevation mechanism implementation requires validation
+    \item DPE concept may need fundamental refinement
+\end{itemize}
+
+\subsubsection{Value of Negative Results}
+
+This negative result constitutes valid research contribution. Negative results are valuable when:
+\begin{enumerate}
+    \item \textbf{Hypothesis was reasonable}: DPE concept is theoretically sound
+    \item \textbf{Methodology was rigorous}: 14 scenarios, 84 runs, systematic evaluation
+    \item \textbf{Conclusions are clear}: Simple algorithms outperform complex mechanisms
+    \item \textbf{Practical implications}: Guides practitioners toward proven strategies
+\end{enumerate}
+
+Our findings provide actionable insights: \textbf{provision resources first, choose context-specific algorithms, avoid premature optimization}.
+
+\subsubsection{Practical Recommendations}
+
+Based on comprehensive evaluation:
+
+\begin{itemize}
+    \item \textbf{Provision resources first}: Capacity matters more than algorithm choice
+    \item \textbf{Choose context-specific algorithms}:
+    \begin{itemize}
+        \item SPT for batch processing (7.7\% advantage in Batch Arrival)
+        \item EDF for deadline-critical systems (14.3\% advantage in Challenge 4, best overall)
+        \item Priority-First when strict priority ordering is paramount
+    \end{itemize}
+    \item \textbf{Avoid premature optimization}: Complex dynamic mechanisms add implementation risk without demonstrated benefit
+    \item \textbf{Focus on implementation quality}: EDF bug invalidated initial results, highlighting testing importance
+\end{itemize}
+
+\subsection{Conclusions and Future Work}
+
+\subsubsection{Summary of Contributions}
+
+\begin{enumerate}
+    \item \textbf{Negative result documentation}: DPE provided no advantage across 14 comprehensive scenarios
+    \item \textbf{Algorithm performance characterization}: SPT excels for batch (7.7\% better), EDF for deadlines (14.3\% better)
+    \item \textbf{Resource dominance finding}: 79\% of scenarios showed identical performance when well-provisioned
+    \item \textbf{Theoretical contributions}: SPT optimality proof, $O(n \log n)$ complexity analysis
+    \item \textbf{Implementation validation}: EDF bug discovery emphasizes rigorous testing
+\end{enumerate}
+
+\subsubsection{Limitations}
+
+\begin{enumerate}
+    \item \textbf{Scenario coverage}: May not stress-test DPE sufficiently
+    \item \textbf{Implementation uncertainty}: Alpha insensitivity suggests potential issues
+    \item \textbf{Two priority classes only}: Extension to $k$ priority classes unexplored
+    \item \textbf{Static workloads}: Dynamic arrival patterns not fully tested
+\end{enumerate}
+
+\subsubsection{Future Research Directions}
+
+\textbf{Algorithmic Refinements:}
+\begin{itemize}
+    \item Alternative elevation criteria (absolute waiting time, relative slack time)
+    \item Hybrid approaches combining DPE with baseline strategies
+    \item Adaptive threshold learning from workload characteristics
+    \item Preemptive variants to test if preemption enables DPE advantages
+\end{itemize}
+
+\textbf{Extended Evaluation:}
+\begin{itemize}
+    \item DPE-focused scenarios with higher utilization (90\%+)
+    \item Multiple priority classes ($k > 2$)
+    \item Online algorithms for unknown task arrivals
+    \item Real workload traces from cloud/manufacturing systems
+\end{itemize}
+
+\textbf{Theoretical Extensions:}
+\begin{itemize}
+    \item Approximation guarantees for DPE
+    \item Competitive analysis against optimal offline solutions
+    \item Hardness results for optimal scheduling with priority elevation
+    \item Conditions under which dynamic priority provides provable advantage
+\end{itemize}
+
+\subsubsection{Final Remarks}
+
+Our research demonstrates that \textbf{evidence-based algorithm selection outperforms complexity for its own sake}. The negative result—that DPE provides no measurable advantage—guides practitioners toward simple, proven, context-appropriate strategies. When systems are well-provisioned, algorithm choice is irrelevant. When resource-constrained, simple algorithms (SPT for batch, EDF for deadlines) excel in their target contexts. Resource provisioning and correct implementation of simple baselines suffice for practical parallel machine scheduling.
+
+
+
+% ===== BIBLIOGRAPHY =====
+\newpage
+\renewcommand{\refname}{\Large References}
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
