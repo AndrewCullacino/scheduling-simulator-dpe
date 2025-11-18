@@ -6,7 +6,7 @@ This script generates all publication-quality visualizations needed for:
 1. Final report (10 pages)
 2. Poster presentation
 
-Reads data from comprehensive_results.csv and generates:
+Reads data from results/comprehensive_results.csv and generates:
 - Gantt charts for key scenarios
 - Performance comparison charts
 - Success rate visualizations
@@ -26,7 +26,7 @@ from challenge_tasks import *
 import os
 
 
-def load_results_data(csv_file='comprehensive_results.csv'):
+def load_results_data(csv_file='results/comprehensive_results.csv'):
     """Load experimental results from CSV"""
     if os.path.exists(csv_file):
         df = pd.read_csv(csv_file)
@@ -51,14 +51,15 @@ def generate_key_gantt_charts(viz):
     print("=" * 70)
 
     # Scenario 1: Batch Arrival - Shows SPT advantage
+    # MUST match experiment_runner.py lines 220-232
     print("\n1. Batch Arrival Scenario...")
     tasks_batch = [
-        Task(1, 0, 2, Priority.HIGH, 15),
-        Task(2, 0, 3, Priority.HIGH, 18),
-        Task(3, 0, 4, Priority.HIGH, 20),
-        Task(4, 0, 5, Priority.LOW, 30),
-        Task(5, 0, 2, Priority.LOW, 35),
-        Task(6, 0, 3, Priority.LOW, 38),
+        Task(1, 0, 3, Priority.HIGH, 8),
+        Task(2, 0, 4, Priority.HIGH, 10),
+        Task(3, 0, 2, Priority.HIGH, 12),
+        Task(4, 0, 5, Priority.LOW, 20),
+        Task(5, 0, 6, Priority.LOW, 25),
+        Task(6, 0, 3, Priority.LOW, 22),
     ]
 
     algorithms = [
@@ -74,35 +75,53 @@ def generate_key_gantt_charts(viz):
         scheduler.run()
         viz.create_gantt_chart(tasks_copy, algo_name, "Batch Arrival", num_machines=2)
 
-    # Scenario 2: Challenge 4 - Shows EDF advantage
-    print("\n2. Challenge 4 Scenario (Alpha Matters)...")
+    # Scenario 2: Extreme 3 - Shows EDF advantage over SPT
+    # MUST match experiment_runner.py lines 357-368
+    print("\n2. Extreme 3 Scenario (SPT Fails)...")
+    tasks_ext3 = [
+        Task(1, 0, 1, Priority.HIGH, 50),
+        Task(2, 0, 10, Priority.HIGH, 11),
+        Task(3, 0, 2, Priority.HIGH, 45),
+        Task(4, 0, 5, Priority.HIGH, 7),
+    ]
+
+    for algo_name, SchedulerClass in algorithms:
+        tasks_copy = copy.deepcopy(tasks_ext3)
+        scheduler = SchedulerClass(tasks_copy, 2)
+        scheduler.run()
+        viz.create_gantt_chart(tasks_copy, algo_name, "Extreme_3", num_machines=2)
+
+    # Scenario 3: Challenge 4 - Alpha sensitivity
+    # MUST match experiment_runner.py lines 287-298
+    print("\n3. Challenge 4 Scenario (Alpha Matters)...")
     tasks_ch4 = [
-        Task(1, 0, 2, Priority.HIGH, 5),
-        Task(2, 0, 2, Priority.HIGH, 5),
-        Task(3, 1, 2, Priority.HIGH, 6),
-        Task(4, 0, 1, Priority.LOW, 9),
-        Task(5, 1, 1, Priority.LOW, 10),
+        Task(1, 0, 4, Priority.LOW, 12),
+        Task(2, 0, 2, Priority.HIGH, 20),
+        Task(3, 1, 2, Priority.HIGH, 22),
+        Task(4, 2, 2, Priority.HIGH, 24),
+        Task(5, 1, 3, Priority.LOW, 15),
     ]
 
     for algo_name, SchedulerClass in algorithms:
         tasks_copy = copy.deepcopy(tasks_ch4)
         scheduler = SchedulerClass(tasks_copy, 2)
         scheduler.run()
-        viz.create_gantt_chart(tasks_copy, algo_name, "Challenge 4", num_machines=2)
+        viz.create_gantt_chart(tasks_copy, algo_name, "Challenge_4", num_machines=2)
 
-    # Scenario 3: Challenge 5 - Priority Inversion
-    print("\n3. Challenge 5 (Priority Inversion)...")
+    # Scenario 4: Challenge 5 - Priority Inversion
+    # MUST match experiment_runner.py lines 301-310
+    print("\n4. Challenge 5 (Priority Inversion)...")
     tasks_ch5 = [
-        Task(1, 0, 8, Priority.LOW, 20),
+        Task(1, 0, 8, Priority.LOW, 30),
         Task(2, 2, 3, Priority.HIGH, 6),
-        Task(3, 3, 3, Priority.HIGH, 8),
+        Task(3, 3, 2, Priority.HIGH, 8),
     ]
 
     for algo_name, SchedulerClass in algorithms:
         tasks_copy = copy.deepcopy(tasks_ch5)
         scheduler = SchedulerClass(tasks_copy, 1)
         scheduler.run()
-        viz.create_gantt_chart(tasks_copy, algo_name, "Challenge 5", num_machines=1)
+        viz.create_gantt_chart(tasks_copy, algo_name, "Challenge_5", num_machines=1)
 
     print("\n✅ Key Gantt charts generated!")
 

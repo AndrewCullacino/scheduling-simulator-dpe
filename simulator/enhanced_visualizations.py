@@ -40,13 +40,15 @@ COLORS = {
     'low_priority': '#F77F00',   # Orange
     'deadline_met': '#06A77D',   # Green
     'deadline_missed': '#D62828', # Red
-    'spt': '#4ECDC4',
-    'edf': '#FF6B6B',
-    'priority_first': '#95E1D3',
-    'dpe': '#F38181',
-    'dpe_0.5': '#FF8FA3',  # Pink for DPE α=0.5
-    'dpe_0.7': '#F38181',  # Original DPE color for α=0.7
-    'dpe_0.9': '#C54040'   # Darker red for DPE α=0.9
+    # Baseline algorithms - distinct colors for comparison
+    'spt': '#E74C3C',            # Red
+    'edf': '#F1C40F',            # Yellow
+    'priority_first': '#2ECC71', # Green
+    # DPE variants - blue gradient to show alpha progression
+    'dpe': '#5DADE2',            # Default DPE (medium blue)
+    'dpe_0.5': '#AED6F1',        # Light blue for DPE α=0.5 (early elevation)
+    'dpe_0.7': '#5DADE2',        # Medium blue for DPE α=0.7 (balanced)
+    'dpe_0.9': '#1F618D'         # Deep blue for DPE α=0.9 (late elevation)
 }
 
 

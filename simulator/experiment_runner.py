@@ -3,19 +3,27 @@ Experiment Runner for COMP3821 Scheduling Project
 ===================================================
 
 This script helps you:
-1. Define test scenarios
-2. Run multiple algorithms
+1. Run test scenarios from organized scenario files
+2. Execute multiple algorithms
 3. Collect metrics automatically
 4. Export results to CSV for analysis
+
+Scenarios are organized in separate files:
+- simple_scenarios.py: Basic validation scenarios
+- challenge_scenarios.py: Scenarios revealing algorithm differences
+- extreme_scenarios.py: Extreme stress test scenarios
 """
 
 import csv
 import copy
 from simple_simulator import (
-    Task, Priority, 
-    SPT_Scheduler, EDF_Scheduler, 
+    Task, Priority,
+    SPT_Scheduler, EDF_Scheduler,
     PriorityFirst_Scheduler, DPE_Scheduler
 )
+from simple_scenarios import get_simple_scenarios
+from challenge_scenarios import get_challenge_scenarios
+from extreme_scenarios import get_extreme_scenarios
 
 
 class ExperimentRunner:
@@ -114,19 +122,23 @@ class ExperimentRunner:
         print(f"  ✓ Low Priority: {metrics['Low Success Rate (%)']:.1f}%")
         print(f"  ⏱ Makespan: {metrics['Makespan']:.1f}")
     
-    def export_to_csv(self, filename='experiment_results.csv'):
-        """Export all results to CSV"""
+    def export_to_csv(self, filename='results/experiment_results.csv'):
+        """Export all results to CSV in results/ folder"""
         if not self.results:
             print("No results to export!")
             return
-        
+
+        # Ensure results directory exists
+        import os
+        os.makedirs('results', exist_ok=True)
+
         keys = self.results[0].keys()
-        
+
         with open(filename, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=keys)
             writer.writeheader()
             writer.writerows(self.results)
-        
+
         print(f"\n📊 Results exported to: {filename}")
     
     def compare_algorithms(self):
@@ -162,242 +174,11 @@ class ExperimentRunner:
 
 
 # =============================================================================
-# TEST SCENARIOS
+# SCENARIOS NOW IMPORTED FROM SEPARATE FILES
 # =============================================================================
-
-def get_test_scenarios():
-    """Define all test scenarios here"""
-    
-    scenarios = []
-    
-    # Scenario 1: Light Load (Easy)
-    scenarios.append({
-        'name': 'Light Load',
-        'description': 'Few tasks, should all meet deadlines',
-        'tasks': [
-            Task(1, 0, 3, Priority.HIGH, 10),
-            Task(2, 0, 2, Priority.HIGH, 12),
-            Task(3, 1, 4, Priority.HIGH, 15),
-            Task(4, 0, 5, Priority.LOW, 25),
-            Task(5, 2, 6, Priority.LOW, 30),
-        ],
-        'num_machines': 2
-    })
-    
-    # Scenario 2: Heavy Load
-    scenarios.append({
-        'name': 'Heavy Load',
-        'description': 'Many tasks, tight deadlines',
-        'tasks': [
-            Task(1, 0, 4, Priority.HIGH, 9),
-            Task(2, 1, 3, Priority.HIGH, 10),
-            Task(3, 2, 3, Priority.HIGH, 12),
-            Task(4, 0, 5, Priority.HIGH, 14),
-            Task(5, 0, 7, Priority.LOW, 20),
-            Task(6, 1, 6, Priority.LOW, 22),
-            Task(7, 2, 5, Priority.LOW, 25),
-        ],
-        'num_machines': 3
-    })
-    
-    # Scenario 3: Starvation Test
-    scenarios.append({
-        'name': 'Starvation Test',
-        'description': 'Continuous high priority, will low priority starve?',
-        'tasks': [
-            Task(1, 0, 2, Priority.HIGH, 8),
-            Task(2, 1, 2, Priority.HIGH, 10),
-            Task(3, 2, 2, Priority.HIGH, 12),
-            Task(4, 3, 2, Priority.HIGH, 14),
-            Task(5, 4, 2, Priority.HIGH, 16),
-            Task(6, 0, 4, Priority.LOW, 15),  # Will this get starved?
-            Task(7, 1, 4, Priority.LOW, 18),  # And this?
-        ],
-        'num_machines': 2
-    })
-    
-    # Scenario 4: All arrive together
-    scenarios.append({
-        'name': 'Batch Arrival',
-        'description': 'All tasks arrive at once',
-        'tasks': [
-            Task(1, 0, 3, Priority.HIGH, 8),
-            Task(2, 0, 4, Priority.HIGH, 10),
-            Task(3, 0, 2, Priority.HIGH, 12),
-            Task(4, 0, 5, Priority.LOW, 20),
-            Task(5, 0, 6, Priority.LOW, 25),
-            Task(6, 0, 3, Priority.LOW, 22),
-        ],
-        'num_machines': 2
-    })
-    
-    return scenarios
-
-# =============================================================================
-# CHALLENGING TEST CASES (Add after get_test_scenarios)
-# =============================================================================
-
-def get_challenging_scenarios():
-    """Challenging test scenarios that reveal algorithm differences"""
-    
-    scenarios = []
-    
-    # Challenge 1: SPT ignores tight deadlines
-    scenarios.append({
-        'name': 'Challenge 1: SPT vs EDF',
-        'description': 'SPT schedules short tasks, missing tight deadlines',
-        'tasks': [
-            Task(1, 0, 2, Priority.HIGH, 30),
-            Task(2, 0, 5, Priority.HIGH, 6),   # TIGHT deadline
-            Task(3, 0, 1, Priority.HIGH, 25),
-            Task(4, 0, 4, Priority.HIGH, 5),   # TIGHT deadline
-        ],
-        'num_machines': 2
-    })
-    
-    # Challenge 2: Starvation test
-    scenarios.append({
-        'name': 'Challenge 2: Starvation',
-        'description': 'Continuous high-priority tasks starve low-priority',
-        'tasks': [
-            Task(1, 0, 3, Priority.LOW, 8),    # Will starve?
-            Task(2, 0, 2, Priority.HIGH, 15),
-            Task(3, 1, 2, Priority.HIGH, 16),
-            Task(4, 2, 2, Priority.HIGH, 17),
-            Task(5, 3, 2, Priority.HIGH, 18),
-            Task(6, 1, 3, Priority.LOW, 10),   # Will starve?
-        ],
-        'num_machines': 2
-    })
-    
-    # Challenge 3: Infeasible (all should fail)
-    scenarios.append({
-        'name': 'Challenge 3: Impossible',
-        'description': 'Mathematically impossible deadlines',
-        'tasks': [
-            Task(1, 0, 5, Priority.HIGH, 5),
-            Task(2, 0, 5, Priority.HIGH, 5),
-            Task(3, 0, 5, Priority.HIGH, 5),
-            Task(4, 0, 5, Priority.HIGH, 5),
-        ],
-        'num_machines': 2
-    })
-    
-    # Challenge 4: DPE Alpha sensitivity
-    scenarios.append({
-        'name': 'Challenge 4: Alpha Matters',
-        'description': 'Different α values produce different results',
-        'tasks': [
-            Task(1, 0, 4, Priority.LOW, 12),
-            Task(2, 0, 2, Priority.HIGH, 20),
-            Task(3, 1, 2, Priority.HIGH, 22),
-            Task(4, 2, 2, Priority.HIGH, 24),
-            Task(5, 1, 3, Priority.LOW, 15),
-        ],
-        'num_machines': 2
-    })
-    
-    # Challenge 5: Priority inversion
-    scenarios.append({
-        'name': 'Challenge 5: Priority Inversion',
-        'description': 'Low-priority blocks high-priority on single machine',
-        'tasks': [
-            Task(1, 0, 8, Priority.LOW, 30),
-            Task(2, 2, 3, Priority.HIGH, 6),   # Arrives late but urgent!
-            Task(3, 3, 2, Priority.HIGH, 8),
-        ],
-        'num_machines': 1
-    })
-    
-    return scenarios
-
-
-# =============================================================================
-# EXTREME TEST CASES
-# =============================================================================
-
-def get_extreme_scenarios():
-    """Extreme test scenarios designed to maximize differences"""
-    
-    scenarios = []
-    
-    # Extreme 1: Guaranteed starvation for Priority-First
-    scenarios.append({
-        'name': 'Extreme 1: Starvation Guaranteed',
-        'description': 'Priority-First WILL starve low-priority',
-        'tasks': [
-            Task(1, 0, 5, Priority.LOW, 16),
-            Task(2, 0, 2, Priority.HIGH, 20),
-            Task(3, 2, 2, Priority.HIGH, 22),
-            Task(4, 4, 2, Priority.HIGH, 24),
-            Task(5, 6, 2, Priority.HIGH, 26),
-            Task(6, 8, 2, Priority.HIGH, 28),
-            Task(7, 10, 2, Priority.HIGH, 30),
-        ],
-        'num_machines': 1
-    })
-    
-    # Extreme 2: Alpha value critical
-    scenarios.append({
-        'name': 'Extreme 2: Alpha Critical',
-        'description': 'α=0.5 succeeds, α=0.9 fails',
-        'tasks': [
-            Task(1, 0, 6, Priority.LOW, 25),
-            Task(2, 0, 3, Priority.HIGH, 30),
-            Task(3, 3, 3, Priority.HIGH, 33),
-            Task(4, 6, 3, Priority.HIGH, 36),
-            Task(5, 9, 3, Priority.HIGH, 39),
-            Task(6, 12, 3, Priority.HIGH, 42),
-            Task(7, 15, 3, Priority.HIGH, 45),
-            Task(8, 18, 3, Priority.HIGH, 48),
-        ],
-        'num_machines': 1
-    })
-    
-    # Extreme 3: SPT clearly fails
-    scenarios.append({
-        'name': 'Extreme 3: SPT Fails',
-        'description': 'SPT ignores deadlines entirely',
-        'tasks': [
-            Task(1, 0, 1, Priority.HIGH, 50),
-            Task(2, 0, 10, Priority.HIGH, 11),
-            Task(3, 0, 2, Priority.HIGH, 45),
-            Task(4, 0, 5, Priority.HIGH, 7),
-        ],
-        'num_machines': 2
-    })
-    
-    # Extreme 4: Multiple starvation
-    scenarios.append({
-        'name': 'Extreme 4: Multiple Starvation',
-        'description': 'Multiple low-priority at risk',
-        'tasks': [
-            Task(1, 0, 4, Priority.LOW, 14),
-            Task(2, 1, 4, Priority.LOW, 16),
-            Task(3, 2, 4, Priority.LOW, 18),
-            Task(4, 0, 2, Priority.HIGH, 25),
-            Task(5, 2, 2, Priority.HIGH, 27),
-            Task(6, 4, 2, Priority.HIGH, 29),
-            Task(7, 6, 2, Priority.HIGH, 31),
-            Task(8, 8, 2, Priority.HIGH, 33),
-            Task(9, 10, 2, Priority.HIGH, 35),
-        ],
-        'num_machines': 2
-    })
-    
-    # Extreme 5: Only EDF and DPE can solve
-    scenarios.append({
-        'name': 'Extreme 5: Priority-First Impossible',
-        'description': 'Feasible but not for Priority-First',
-        'tasks': [
-            Task(1, 0, 5, Priority.LOW, 6),    # MUST go first!
-            Task(2, 0, 3, Priority.HIGH, 15),
-            Task(3, 0, 2, Priority.HIGH, 20),
-        ],
-        'num_machines': 1
-    })
-    
-    return scenarios
+# Simple scenarios: simple_scenarios.py
+# Challenge scenarios: challenge_scenarios.py
+# Extreme scenarios: extreme_scenarios.py
 
 # =============================================================================
 # MAIN EXPERIMENT
@@ -405,14 +186,14 @@ def get_extreme_scenarios():
 
 def run_all_experiments():
     """Run complete experimental suite including challenging and extreme cases"""
-    
+
     runner = ExperimentRunner()
-    
-    # Get all scenarios
-    basic_scenarios = get_test_scenarios()
-    challenging_scenarios = get_challenging_scenarios()
+
+    # Get all scenarios from organized scenario files
+    basic_scenarios = get_simple_scenarios()
+    challenging_scenarios = get_challenge_scenarios()
     extreme_scenarios = get_extreme_scenarios()
-    
+
     all_scenarios = basic_scenarios + challenging_scenarios + extreme_scenarios
     
     # Define algorithms to test
@@ -443,10 +224,10 @@ def run_all_experiments():
     
     # Print comparison
     runner.compare_algorithms()
-    
+
     # Export results
-    runner.export_to_csv('comprehensive_results.csv')
-    
+    runner.export_to_csv('results/comprehensive_results.csv')
+
     print("\n" + "=" * 80)
     print("✅ ALL EXPERIMENTS COMPLETE!")
     print("=" * 80)
@@ -455,9 +236,9 @@ def run_all_experiments():
     print(f"  • Challenging: {len(challenging_scenarios)}")
     print(f"  • Extreme: {len(extreme_scenarios)}")
     print(f"\nTotal experiments run: {len(all_scenarios) * len(algorithms)}")
-    print("\nResults saved to: comprehensive_results.csv")
+    print("\nResults saved to: results/comprehensive_results.csv")
     print("\nNext steps:")
-    print("1. Open comprehensive_results.csv in Excel/Google Sheets")
+    print("1. Open results/comprehensive_results.csv in Excel/Google Sheets")
     print("2. Create charts comparing algorithms")
     print("3. Analyze when DPE helps vs hurts")
     print("4. Focus on 'Challenging' and 'Extreme' scenarios for your report")

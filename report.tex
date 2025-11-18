@@ -92,7 +92,7 @@
   [\vspace{-0.5em}\rule{\textwidth}{1pt}]
 
 \title{Greedy Scheduling with Dynamic Priority Elevations and Deadlines\\[0.5em]
-{\large Group [INSERT GROUP NUMBER]}}
+{\large Group 5}}
 \author{}
 \date{}
 
@@ -241,7 +241,7 @@ SPT minimizes average completion time by scheduling tasks in increasing order of
 
 EDF prioritizes tasks by deadline, scheduling the most urgent task first. This is optimal for single-processor deadline-constrained scheduling \cite{LIULAYLAND1973}.
 
-\textbf{Algorithm}: Sort all tasks by deadline in ascending order (high-priority tasks have deadline $D_h$, low-priority tasks have deadline $D_l$). For each task in sorted order, assign to the machine with minimum availability time.
+\textbf{Algorithm}: Sort all tasks by deadline in ascending order. For each task in sorted order, assign to the machine with minimum availability time.
 
 \textbf{Rationale}: Deadline-aware scheduling maximizes the probability of meeting time constraints by addressing urgent work first.
 
@@ -268,7 +268,7 @@ This measures the fraction of available deadline window consumed. When $\text{de
 \textbf{Algorithm}: At each scheduling decision point:
 \begin{enumerate}
     \item Calculate deadline pressure for all waiting low-priority tasks
-    \item Elevate tasks with pressure $> \alpha$ to effective high priority
+    \item Elevate tasks with pressure $> \alpha$ to high priority
     \item Schedule using priority-aware EDF (considering both original and elevated priorities)
     \item Tasks revert to original priority after scheduling
 \end{enumerate}
@@ -286,11 +286,6 @@ All algorithms were implemented in Python using a discrete-event simulator. The 
     \item Machine availability tracker (earliest available time for each machine)
 \end{itemize}
 
-\textbf{Code Repository}: The complete implementation, test scenarios, and experimental data are available at:
-
-\url{https://github.com/[INSERT-REPOSITORY-URL]/comp3821-scheduling}
-
-All results reported are fully reproducible using the provided code and scenario definitions in \texttt{simulator/simple\_simulator.py}.
 
 \section{Theoretical Analysis}
 \label{sec:theory}
@@ -355,15 +350,6 @@ For each algorithm:
 \end{itemize}
 \end{proof}
 
-\subsection{Space Complexity}
-
-All algorithms use $O(n + m)$ space:
-\begin{itemize}
-    \item Task storage: $O(n)$ for task attributes
-    \item Machine availability tracking: $O(m)$ for availability times
-    \item Event/ready queues: $O(n)$ in worst case (all tasks ready simultaneously)
-\end{itemize}
-
 \section{Experimental Setup}
 \label{sec:experiments}
 
@@ -422,11 +408,11 @@ For each experimental run, we measured:
 
 \subsection{Critical EDF Bug Fix}
 
-During validation, we discovered that EDF produced identical schedules to SPT despite fundamentally different theoretical foundations. Investigation revealed a critical implementation bug in the event processing loop (\texttt{simple\_simulator.py}, lines 100-128).
+During validation, we discovered that EDF produced identical schedules to SPT despite fundamentally different theoretical foundations.
 
-\textbf{Root Cause}: The scheduler processed arrival events one-by-one, calling \texttt{schedule\_ready\_tasks()} immediately after each arrival. When multiple tasks arrived simultaneously (e.g., at time 0), the first task would be scheduled before subsequent tasks entered the ready queue, producing SPT-like behavior.
+\textbf{Root Cause}: Processing arrivals one-by-one caused premature scheduling. When tasks arrived simultaneously, the scheduler couldn't compare all deadlines, breaking EDF's optimality.
 
-\textbf{Fix}: We modified event processing to (1) collect ALL events at the current timestamp, (2) process all ARRIVAL events before COMPLETION events, (3) call \texttt{schedule\_ready\_tasks()} only AFTER all events at current time are processed. This ensures EDF's selection function sees all available tasks when making deadline-based decisions.
+\textbf{Fix}: Batch process all events at each timestamp—first add all arrivals to the ready queue, then schedule once. This ensures EDF sees the complete set of available tasks.
 
 \textbf{Impact}: After the fix, EDF showed measurably superior performance in deadline-critical scenarios:
 
@@ -436,10 +422,12 @@ During validation, we discovered that EDF produced identical schedules to SPT de
 \label{tab:edf_fix_impact}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Scenario} & \textbf{Success Before} & \textbf{Success After} & \textbf{Makespan Before} & \textbf{Makespan After} \\
+& \multicolumn{2}{c}{\textbf{Success Rate (\%)}} & \multicolumn{2}{c}{\textbf{Makespan}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+\textbf{Scenario} & Before & After & Before & After \\
 \midrule
-Extreme 1 & 85.7\% & \textbf{100.0\%} & 17 & 17 \\
-Extreme 3 & 75.0\% & \textbf{100.0\%} & 12 & \textbf{10} \\
+Extreme 1 & 85.7 & \textbf{100.0} & 17 & 17 \\
+Extreme 3 & 75.0 & \textbf{100.0} & 12 & \textbf{10} \\
 \bottomrule
 \end{tabular}
 \end{table}
