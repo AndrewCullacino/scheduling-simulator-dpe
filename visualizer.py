@@ -208,12 +208,12 @@ def categorize_scenario(scenario_name):
 def create_algorithm_performance_by_category(df, output_dir='visualizations'):
     """
     Algorithm performance comparison across scenario categories.
-    Grouped bar chart showing mean success rates.
+    Grouped bar chart showing mean composite performance scores.
     """
     print("\n📊 Generating Algorithm Performance Comparison...")
 
     df['Category'] = df['Scenario'].apply(categorize_scenario)
-    perf_data = df.groupby(['Algorithm', 'Category'])['Total Success Rate (%)'].mean().reset_index()
+    perf_data = df.groupby(['Algorithm', 'Category'])['Composite Performance Score (%)'].mean().reset_index()
 
     fig, ax = plt.subplots(figsize=(14, 8))
 
@@ -226,7 +226,7 @@ def create_algorithm_performance_by_category(df, output_dir='visualizations'):
 
     for algorithm in algorithms:
         alg_data = perf_data[perf_data['Algorithm'] == algorithm]
-        values = [alg_data[alg_data['Category'] == cat]['Total Success Rate (%)'].values[0]
+        values = [alg_data[alg_data['Category'] == cat]['Composite Performance Score (%)'].values[0]
                   if len(alg_data[alg_data['Category'] == cat]) > 0 else 0
                   for cat in categories]
 
@@ -246,8 +246,8 @@ def create_algorithm_performance_by_category(df, output_dir='visualizations'):
         multiplier += 1
 
     ax.set_xlabel('Scenario Category', fontsize=12, fontweight='bold')
-    ax.set_ylabel('Mean Success Rate (%)', fontsize=12, fontweight='bold')
-    ax.set_title('Algorithm Performance Across Scenario Categories\n(Higher is Better)',
+    ax.set_ylabel('Composite Performance Score (%)', fontsize=12, fontweight='bold')
+    ax.set_title('Algorithm Performance Across Scenario Categories\n(Balancing Success Rate & Makespan Efficiency)',
                 fontsize=14, fontweight='bold', pad=20)
     ax.set_xticks(x + width * 3)
     ax.set_xticklabels(categories)
@@ -323,12 +323,12 @@ def create_alpha_sensitivity_clean(df, output_dir='visualizations'):
 
 def create_performance_heatmap_clean(df, output_dir='visualizations'):
     """
-    Performance heatmap showing success rates (Scenario × Algorithm).
+    Performance heatmap showing composite performance scores (Scenario × Algorithm).
     """
     print("\n📊 Generating Performance Heatmap...")
 
     pivot_data = df.pivot_table(
-        values='Total Success Rate (%)',
+        values='Composite Performance Score (%)',
         index='Scenario',
         columns='Algorithm',
         aggfunc='mean'
@@ -341,9 +341,9 @@ def create_performance_heatmap_clean(df, output_dir='visualizations'):
 
     sns.heatmap(pivot_data, annot=True, fmt='.1f', cmap='RdYlGn',
                 vmin=0, vmax=100, center=70, linewidths=0.5,
-                cbar_kws={'label': 'Success Rate (%)'}, ax=ax)
+                cbar_kws={'label': 'Composite Performance Score (%)'}, ax=ax)
 
-    ax.set_title('Algorithm Performance Heatmap\nSuccess Rates Across All Scenarios',
+    ax.set_title('Algorithm Performance Heatmap\nComposite Scores (Success Rate + Makespan Efficiency) Across All Scenarios',
                 fontsize=14, fontweight='bold', pad=20)
     ax.set_xlabel('Algorithm', fontsize=12, fontweight='bold')
     ax.set_ylabel('Scenario', fontsize=12, fontweight='bold')

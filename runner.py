@@ -28,6 +28,7 @@ class ExperimentRunner:
 
     def __init__(self):
         self.results = []
+        self.best_makespan_per_scenario = {}  # Track best makespan for normalization
 
     def run_experiment(self, scenario, algorithm_name, SchedulerClass, **kwargs):
         """
@@ -113,6 +114,17 @@ class ExperimentRunner:
         low_success_rate = (low_met / len(low_priority) * 100) if low_priority else 0
         total_success_rate = (total_met / total_tasks * 100) if total_tasks else 0
 
+        # Track best makespan for this scenario (for later normalization)
+        if scenario_name not in self.best_makespan_per_scenario:
+            self.best_makespan_per_scenario[scenario_name] = makespan
+        else:
+            self.best_makespan_per_scenario[scenario_name] = min(
+                self.best_makespan_per_scenario[scenario_name], makespan
+            )
+
+        # Placeholder for composite score (will be calculated after all experiments)
+        composite_score = 0.0
+
         return {
             'Scenario': scenario_name,
             'Algorithm': algorithm_name,
@@ -126,10 +138,45 @@ class ExperimentRunner:
             'Low Success Rate (%)': round(low_success_rate, 2),
             'Total Success Rate (%)': round(total_success_rate, 2),
             'Makespan': round(makespan, 2),
+            'Composite Performance Score (%)': round(composite_score, 2),  # New metric
             'Avg Response Time': round(avg_response, 2),
             'Avg Waiting Time': round(avg_waiting, 2),
             'Simulation Time': round(sim_time, 2)
         }
+
+    def calculate_composite_scores(self):
+        """
+        Calculate composite performance scores after all experiments.
+
+        Uses harmonic mean of success rate and makespan efficiency:
+        - Success Rate: percentage of tasks meeting deadlines
+        - Makespan Efficiency: normalized as (best_makespan / current_makespan) × 100
+        - Composite Score: 2 × (SR × ME) / (SR + ME)
+
+        This approach (F-score) penalizes imbalanced performance and ensures
+        algorithms cannot achieve high scores by excelling at just one metric.
+        """
+        for result in self.results:
+            scenario = result['Scenario']
+            best_makespan = self.best_makespan_per_scenario[scenario]
+            current_makespan = result['Makespan']
+
+            # Normalize makespan to efficiency percentage (higher is better)
+            # Best makespan gets 100%, worse makespans get proportionally less
+            if current_makespan > 0:
+                makespan_efficiency = (best_makespan / current_makespan) * 100
+            else:
+                makespan_efficiency = 0.0
+
+            success_rate = result['Total Success Rate (%)']
+
+            # Harmonic mean (F-score formula)
+            if success_rate + makespan_efficiency > 0:
+                composite_score = 2 * (success_rate * makespan_efficiency) / (success_rate + makespan_efficiency)
+            else:
+                composite_score = 0.0
+
+            result['Composite Performance Score (%)'] = round(composite_score, 2)
 
     def print_summary(self, metrics):
         """Print concise metrics summary."""
@@ -233,6 +280,12 @@ def run_all_experiments():
 
         for algo_name, SchedulerClass, kwargs in algorithms:
             runner.run_experiment(scenario, algo_name, SchedulerClass, **kwargs)
+
+    # Calculate composite performance scores (requires all experiments to be complete)
+    print("\n" + "=" * 80)
+    print("Calculating composite performance scores...")
+    print("=" * 80)
+    runner.calculate_composite_scores()
 
     # Print comparison
     runner.compare_algorithms()
