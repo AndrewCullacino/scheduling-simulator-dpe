@@ -223,7 +223,7 @@ class PriorityFirst_Scheduler(Scheduler):
 
 
 class DPE_Scheduler(Scheduler):
-    """Dynamic Priority Elevation with threshold α = 0.7"""
+    """Dynamic Priority Elevation with threshold α"""
     
     def __init__(self, tasks, num_machines, alpha=0.7):
         super().__init__(tasks, num_machines)

@@ -25,6 +25,8 @@ Thumbs.db
 # Project specific
 visual_results/
 simso/
+../report.tex
+*.tex
 
 # Jupyter Notebook
 .ipynb_checkpoints
