@@ -1,0 +1,5 @@
+run,task_id,arrival_time,processing_time,priority,deadline,start_time,completion_time,machine_id,met_deadline
+demo2_DPE_a0.7,L,0,5,LOW,17,0,5,0,True
+demo2_DPE_a0.7,H1,0,4,HIGH,30,5,9,0,True
+demo2_DPE_a0.7,H2,4,4,HIGH,35,9,13,0,True
+demo2_DPE_a0.7,H3,8,4,HIGH,40,13,17,0,True
