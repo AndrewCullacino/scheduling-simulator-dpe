@@ -1,7 +1,0 @@
-run,task_id,arrival_time,processing_time,priority,deadline,start_time,completion_time,machine_id,met_deadline
-demo3_DPE_a0.9,L,0,4,LOW,20,0,4,0,True
-demo3_DPE_a0.9,H1,0,3,HIGH,30,4,7,0,True
-demo3_DPE_a0.9,H2,3,3,HIGH,33,7,10,0,True
-demo3_DPE_a0.9,H3,6,3,HIGH,36,10,13,0,True
-demo3_DPE_a0.9,H4,9,3,HIGH,39,13,16,0,True
-demo3_DPE_a0.9,H5,12,3,HIGH,42,16,19,0,True

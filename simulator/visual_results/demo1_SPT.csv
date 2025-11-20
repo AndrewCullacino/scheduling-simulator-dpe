@@ -1,3 +1,0 @@
-run,task_id,arrival_time,processing_time,priority,deadline,start_time,completion_time,machine_id,met_deadline
-demo1_SPT,A,0,2,HIGH,50,0,2,0,True
-demo1_SPT,B,0,10,HIGH,11,2,12,0,False
