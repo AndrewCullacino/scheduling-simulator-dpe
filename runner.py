@@ -10,7 +10,8 @@ collecting comprehensive metrics for analysis.
 import csv
 import copy
 import os
-from simple_simulator import Task, Priority
+from typing import List, Dict, Any, Type, Optional
+from simple_simulator import Task, Priority, Scheduler
 from algorithms import get_all_algorithms
 from scenarios import get_all_scenarios
 
@@ -26,11 +27,12 @@ class ExperimentRunner:
     - Generate comparison tables
     """
 
-    def __init__(self):
-        self.results = []
-        self.best_makespan_per_scenario = {}  # Track best makespan for normalization
+    def __init__(self) -> None:
+        self.results: List[Dict[str, Any]] = []
+        self.best_makespan_per_scenario: Dict[str, float] = {}  # Track best makespan for normalization
 
-    def run_experiment(self, scenario, algorithm_name, SchedulerClass, **kwargs):
+    def run_experiment(self, scenario: Dict[str, Any], algorithm_name: str,
+                      SchedulerClass: Type[Scheduler], **kwargs: Any) -> Dict[str, Any]:
         """
         Run single experiment and collect metrics.
 
@@ -68,7 +70,8 @@ class ExperimentRunner:
 
         return metrics
 
-    def calculate_metrics(self, tasks, scenario_name, algorithm_name, sim_time):
+    def calculate_metrics(self, tasks: List[Task], scenario_name: str,
+                         algorithm_name: str, sim_time: float) -> Dict[str, Any]:
         """
         Calculate comprehensive performance metrics.
 
@@ -144,7 +147,7 @@ class ExperimentRunner:
             'Simulation Time': round(sim_time, 2)
         }
 
-    def calculate_composite_scores(self):
+    def calculate_composite_scores(self) -> None:
         """
         Calculate composite performance scores after all experiments.
 
@@ -178,14 +181,14 @@ class ExperimentRunner:
 
             result['Composite Performance Score (%)'] = round(composite_score, 2)
 
-    def print_summary(self, metrics):
+    def print_summary(self, metrics: Dict[str, Any]) -> None:
         """Print concise metrics summary."""
         print(f"  ✓ Success Rate: {metrics['Total Success Rate (%)']:.1f}%")
         print(f"  ✓ High Priority: {metrics['High Success Rate (%)']:.1f}%")
         print(f"  ✓ Low Priority: {metrics['Low Success Rate (%)']:.1f}%")
         print(f"  ⏱ Makespan: {metrics['Makespan']:.1f}")
 
-    def export_to_csv(self, filename='results/experiment_results.csv'):
+    def export_to_csv(self, filename: str = 'results/experiment_results.csv') -> None:
         """
         Export all results to CSV.
 
@@ -208,7 +211,7 @@ class ExperimentRunner:
 
         print(f"\n📊 Results exported to: {filename}")
 
-    def compare_algorithms(self):
+    def compare_algorithms(self) -> None:
         """Print formatted comparison table across all scenarios."""
         if not self.results:
             print("No results to compare!")
@@ -240,7 +243,7 @@ class ExperimentRunner:
                       f"{r['Makespan']:<10.1f}")
 
 
-def run_all_experiments():
+def run_all_experiments() -> None:
     """
     Run complete experimental suite.
 

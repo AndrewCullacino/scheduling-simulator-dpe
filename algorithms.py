@@ -9,7 +9,8 @@ All scheduling algorithms consolidated in one file:
 - DPE (Dynamic Priority Elevation with configurable α threshold)
 """
 
-from simple_simulator import Scheduler, Priority
+from typing import List, Optional, Dict, Type
+from simple_simulator import Scheduler, Priority, Task
 
 
 class SPT_Scheduler(Scheduler):
@@ -20,7 +21,7 @@ class SPT_Scheduler(Scheduler):
     Optimizes for makespan but ignores deadlines and priorities.
     """
 
-    def select_task(self, ready_tasks):
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
         if not ready_tasks:
             return None
         return min(ready_tasks, key=lambda t: t.processing_time)
@@ -34,7 +35,7 @@ class EDF_Scheduler(Scheduler):
     Optimal for single-machine scheduling without priorities.
     """
 
-    def select_task(self, ready_tasks):
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
         if not ready_tasks:
             return None
         return min(ready_tasks, key=lambda t: t.deadline)
@@ -48,7 +49,7 @@ class PriorityFirst_Scheduler(Scheduler):
     within the same priority class. Can cause low-priority starvation.
     """
 
-    def select_task(self, ready_tasks):
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
         if not ready_tasks:
             return None
 
@@ -76,11 +77,11 @@ class DPE_Scheduler(Scheduler):
         - α = 0.7, 0.9: Permits starvation (42.9% low-priority success)
     """
 
-    def __init__(self, tasks, num_machines, alpha=0.7):
+    def __init__(self, tasks: List[Task], num_machines: int, alpha: float = 0.7) -> None:
         super().__init__(tasks, num_machines)
         self.alpha = alpha
 
-    def get_effective_priority(self, task):
+    def get_effective_priority(self, task: Task) -> Priority:
         """
         Calculate effective priority with dynamic elevation.
 
@@ -102,7 +103,7 @@ class DPE_Scheduler(Scheduler):
 
         return Priority.LOW
 
-    def select_task(self, ready_tasks):
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
         if not ready_tasks:
             return None
 
@@ -124,7 +125,7 @@ AVAILABLE_ALGORITHMS = {
 }
 
 
-def get_all_algorithms():
+def get_all_algorithms() -> Dict[str, Type[Scheduler]]:
     """
     Get all available algorithms for experiments.
 
