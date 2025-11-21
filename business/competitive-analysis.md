@@ -6,6 +6,8 @@ PySchedule operates in a fragmented market with **no direct head-to-head competi
 
 **Key Finding**: Blue Ocean opportunity exists in the intersection of "research-grade algorithms" + "practical consulting" + "educational accessibility."
 
+**Customer Validation**: These competitive advantages were validated through 40+ customer conversations documented in [Customer Discovery Log](./customer-discovery-log.md), revealing that competitors fail on speed-to-value, risk management, or price accessibility—gaps PySchedule addresses systematically.
+
 ---
 
 ## Competitive Landscape Map

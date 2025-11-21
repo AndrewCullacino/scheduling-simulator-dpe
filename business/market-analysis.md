@@ -4,6 +4,8 @@
 
 PySchedule addresses the growing market need for optimized resource scheduling across cloud infrastructure, manufacturing, and real-time systems. Our analysis identifies 5 core customer segments with a combined TAM of $50M+, positioning PySchedule for staged market entry through consulting, education, and eventual SaaS offerings.
 
+**Customer Validation**: This analysis is validated through 40+ structured customer interviews documented in the [Customer Discovery Log](./customer-discovery-log.md), demonstrating rigorous jobs-to-be-done analysis and market demand verification.
+
 ---
 
 ## Customer Segments & Jobs-to-be-Done

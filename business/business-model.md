@@ -4,6 +4,8 @@
 
 PySchedule follows a hybrid business model transitioning from **Open-Source + Consulting** to **Education + SaaS**, leveraging the research toolkit as both a lead generation engine and product foundation.
 
+**Strategic Context**: This business model emerged from rigorous customer discovery and a strategic pivot from the original VC-backed SaaS approach. See [Startup Journey](./startup-journey.md) for the complete pivot narrative and [Customer Discovery Log](./customer-discovery-log.md) for the jobs-to-be-done analysis that informed this model.
+
 ---
 
 ## Customer Segments
