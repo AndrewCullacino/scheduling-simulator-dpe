@@ -1,6 +1,6 @@
 """
-Experiment Runner for COMP3821 Scheduling Project
-===================================================
+Experiment Runner for Scheduling Research
+=========================================
 
 Consolidated experiment execution and data collection.
 Runs scheduling experiments across all scenarios and algorithms,

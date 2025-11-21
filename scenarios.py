@@ -1,6 +1,6 @@
 """
-Test Scenarios for COMP3821 Scheduling Project
-===============================================
+Test Scenarios for Real-Time Scheduling Research
+=================================================
 
 All test scenarios consolidated in one file for easier management.
 Contains 24 scenarios across 5 categories:
@@ -10,19 +10,24 @@ Contains 24 scenarios across 5 categories:
 - Advanced (5 scenarios): Realistic multi-machine workloads
 - New (5 scenarios): Alpha sensitivity and specialized tests
 
-Author: Group 5
-Date: November 2024
+Author: PySchedule Development Team
+Date: 2024
 """
 
+from typing import Dict, List, Any
 from simple_simulator import Task, Priority
 
 
-def get_all_scenarios():
+def get_all_scenarios() -> List[Dict[str, Any]]:
     """
     Get all 24 test scenarios.
-    
+
     Returns:
-        list: All scenario dictionaries combined
+        List of scenario dictionaries, each containing:
+            - name (str): Scenario name
+            - description (str): What the scenario tests
+            - tasks (List[Task]): List of Task objects
+            - num_machines (int): Number of parallel machines
     """
     return (
         get_simple_scenarios() +
@@ -33,21 +38,7 @@ def get_all_scenarios():
     )
 
 
-"""
-Simple Test Scenarios for COMP3821 Scheduling Project
-======================================================
-
-Basic test scenarios for validating algorithm implementations.
-These scenarios test fundamental scheduling behaviors under normal conditions.
-
-Author: Group 5
-Date: November 2024
-"""
-
-from simple_simulator import Task, Priority
-
-
-def get_simple_scenarios():
+def get_simple_scenarios() -> List[Dict[str, Any]]:
     """
     Define basic test scenarios for algorithm validation.
 
@@ -125,20 +116,7 @@ def get_simple_scenarios():
     return scenarios
 
 
-"""
-Challenge Test Scenarios for COMP3821 Scheduling Project
-=========================================================
-
-Challenging test scenarios designed to reveal algorithm differences.
-These scenarios expose weaknesses and strengths of different scheduling approaches.
-
-Author: Group 5
-Date: November 2024
-"""
-
-
-
-def get_challenge_scenarios():
+def get_challenge_scenarios() -> List[Dict[str, Any]]:
     """
     Define challenging test scenarios that reveal algorithm differences.
 
@@ -230,14 +208,14 @@ def get_challenge_scenarios():
 
 
 """
-Extreme Test Scenarios for COMP3821 Scheduling Project
-=======================================================
+Extreme Test Scenarios for Scheduling Research
+==============================================
 
 Extreme test scenarios designed to maximize algorithm differentiation.
 These scenarios create stress conditions to reveal algorithm limits and trade-offs.
 
-Author: Group 5
-Date: November 2024
+Author: PySchedule Development Team
+Date: 2024
 """
 
 
@@ -343,8 +321,8 @@ def get_extreme_scenarios():
 
 
 """
-Advanced Test Scenarios for COMP3821 Scheduling Project
-========================================================
+Advanced Test Scenarios for Scheduling Research
+================================================
 
 Advanced scenarios designed to fill gaps in current test coverage:
 - Multi-machine utilization and load balancing
@@ -355,8 +333,8 @@ Advanced scenarios designed to fill gaps in current test coverage:
 These scenarios complement existing basic, challenge, and extreme scenarios
 by testing parallel efficiency and real-world applicability.
 
-Author: Group 5
-Date: November 2024
+Author: PySchedule Development Team
+Date: 2024
 """
 
 
@@ -518,8 +496,8 @@ def get_advanced_scenarios():
 
 
 """
-New Experimental Scenarios for COMP3821 Scheduling Project
-==========================================================
+New Experimental Scenarios for Scheduling Research
+==================================================
 
 Additional scenarios to complement existing test suite:
 1. Deadline Gradient - Progressive deadline pressure testing
@@ -528,8 +506,8 @@ Additional scenarios to complement existing test suite:
 4. Bimodal Processing - Extreme processing time variance
 5. Overload Recovery - Algorithm recovery from saturation
 
-Author: Group 5
-Date: November 2024
+Author: PySchedule Development Team
+Date: 2024
 """
 
 

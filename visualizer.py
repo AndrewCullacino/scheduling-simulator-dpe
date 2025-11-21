@@ -1,6 +1,6 @@
 """
-Visualization System for COMP3821 Scheduling Project
-=====================================================
+Visualization System for Scheduling Research
+============================================
 
 Comprehensive publication-quality visualizations including:
 1. Gantt charts showing task scheduling timelines
@@ -12,8 +12,8 @@ Comprehensive publication-quality visualizations including:
 
 All outputs optimized for academic publication (300 DPI).
 
-Author: Group 5
-Date: November 2024
+Author: PySchedule Development Team
+Date: 2024
 """
 
 import matplotlib.pyplot as plt

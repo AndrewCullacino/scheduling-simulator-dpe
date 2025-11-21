@@ -1,6 +1,6 @@
 """
-Algorithm Implementations for COMP3821 Scheduling Project
-==========================================================
+Scheduling Algorithm Implementations
+====================================
 
 All scheduling algorithms consolidated in one file:
 - SPT (Shortest Processing Time)

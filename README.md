@@ -1,8 +1,8 @@
-# COMP3821 Scheduling Simulator - Consolidated Structure
+# PySchedule: Real-Time Scheduling Research Toolkit
 
 ## Overview
 
-The simulator codebase has been reorganized into a clean, function-separated structure with 5 core files (down from 12 original files).
+A discrete-event simulation framework for evaluating real-time scheduling algorithms with priorities and deadlines. The codebase is organized into 5 core modules with clear separation of concerns.
 
 ## File Structure
 
@@ -241,6 +241,6 @@ The consolidated structure makes future modifications easier:
 
 ---
 
-**Consolidated by**: Claude Code (ultrathink mode)
-**Date**: 2025-11-20
-**Project**: COMP3821 Scheduling with Priorities and Deadlines
+**Author**: PySchedule Development Team
+**Date**: 2024
+**License**: MIT
