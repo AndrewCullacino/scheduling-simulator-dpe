@@ -1,0 +1,63 @@
+# PySchedule Configuration File
+# Copy this to config.yaml and customize for your experiments
+
+# Experiment Configuration
+experiment:
+  # Output directory for results
+  output_dir: "results"
+
+  # Results filename
+  results_file: "experiment_results.csv"
+
+  # Number of parallel workers (0 = auto-detect CPU count)
+  parallel_workers: 0
+
+# Algorithms to run (comment out to disable)
+algorithms:
+  - SPT
+  - EDF
+  - Priority-First
+  - "DPE (α=0.3)"
+  - "DPE (α=0.5)"
+  - "DPE (α=0.7)"
+  - "DPE (α=0.9)"
+
+# Scenario categories to include
+scenarios:
+  simple: true
+  challenge: true
+  extreme: true
+  advanced: true
+  new: true
+
+# Visualization settings
+visualization:
+  enabled: true
+  output_dir: "output"
+  formats: ["png"]  # Options: png, pdf, svg
+  dpi: 300
+
+  # Chart types to generate
+  charts:
+    gantt: true
+    performance_comparison: true
+    pareto_frontier: true
+    heatmap: true
+    alpha_sensitivity: true
+
+# Analysis settings
+analysis:
+  # Calculate composite performance scores
+  composite_scores: true
+
+  # Generate comparison tables
+  comparison_tables: true
+
+  # Statistical analysis
+  statistical_tests: false
+
+# Logging
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  file: "pyschedule.log"
+  console: true
