@@ -1,0 +1,462 @@
+% PySchedule Citations Bibliography
+%
+% This file contains BibTeX entries for academic papers and resources
+% related to real-time scheduling, discrete-event simulation, and
+% the PySchedule framework.
+%
+% Usage: \cite{liu1973scheduling} in your LaTeX document
+%
+
+% ============================================================================
+% PySchedule Software Citation
+% ============================================================================
+
+@software{pyschedule2024,
+  title = {PySchedule: A Discrete-Event Simulation Framework for Real-Time Scheduling Research},
+  author = {{PySchedule Development Team}},
+  year = {2024},
+  url = {https://github.com/yourusername/pyschedule},
+  version = {1.0.0},
+  note = {MIT License}
+}
+
+% ============================================================================
+% Foundational Real-Time Scheduling Papers
+% ============================================================================
+
+@article{liu1973scheduling,
+  title = {Scheduling Algorithms for Multiprogramming in a Hard-Real-Time Environment},
+  author = {Liu, Chung Laung and Layland, James W.},
+  journal = {Journal of the ACM (JACM)},
+  volume = {20},
+  number = {1},
+  pages = {46--61},
+  year = {1973},
+  publisher = {ACM New York, NY, USA},
+  doi = {10.1145/321738.321743},
+  note = {Seminal paper proving EDF optimality for single-machine scheduling}
+}
+
+@article{smith1956various,
+  title = {Various Optimizers for Single-Stage Production},
+  author = {Smith, Wayne E.},
+  journal = {Naval Research Logistics Quarterly},
+  volume = {3},
+  number = {1-2},
+  pages = {59--66},
+  year = {1956},
+  publisher = {Wiley Online Library},
+  doi = {10.1002/nav.3800030106},
+  note = {Proves SPT minimizes average completion time}
+}
+
+% ============================================================================
+% Priority Inversion and Synchronization
+% ============================================================================
+
+@article{sha1990priority,
+  title = {Priority Inheritance Protocols: An Approach to Real-Time Synchronization},
+  author = {Sha, Lui and Rajkumar, Ragunathan and Lehoczky, John P.},
+  journal = {IEEE Transactions on Computers},
+  volume = {39},
+  number = {9},
+  pages = {1175--1185},
+  year = {1990},
+  publisher = {IEEE},
+  doi = {10.1109/12.57058},
+  note = {Foundational work on priority inheritance protocols}
+}
+
+@inproceedings{reeves1997really,
+  title = {What Really Happened on Mars?},
+  author = {Reeves, Glenn E.},
+  booktitle = {IEEE Real-Time Systems Symposium},
+  year = {1997},
+  note = {Mars Pathfinder priority inversion incident analysis}
+}
+
+% ============================================================================
+% Scheduling Theory Textbooks and Surveys
+% ============================================================================
+
+@book{buttazzo2011hard,
+  title = {Hard Real-Time Computing Systems: Predictable Scheduling Algorithms and Applications},
+  author = {Buttazzo, Giorgio C.},
+  year = {2011},
+  edition = {3rd},
+  publisher = {Springer Science \& Business Media},
+  isbn = {978-1-4614-0676-1},
+  doi = {10.1007/978-1-4614-0676-1}
+}
+
+@article{davis2011survey,
+  title = {A Survey of Hard Real-Time Scheduling for Multiprocessor Systems},
+  author = {Davis, Robert I. and Burns, Alan},
+  journal = {ACM Computing Surveys (CSUR)},
+  volume = {43},
+  number = {4},
+  pages = {1--44},
+  year = {2011},
+  publisher = {ACM New York, NY, USA},
+  doi = {10.1145/1978802.1978814},
+  note = {Comprehensive survey of multiprocessor real-time scheduling}
+}
+
+@book{pinedo2016scheduling,
+  title = {Scheduling: Theory, Algorithms, and Systems},
+  author = {Pinedo, Michael L.},
+  year = {2016},
+  edition = {5th},
+  publisher = {Springer},
+  isbn = {978-3-319-26580-3},
+  doi = {10.1007/978-3-319-26580-3}
+}
+
+@book{brucker2012complex,
+  title = {Complex Scheduling},
+  author = {Brucker, Peter and Knust, Sigrid},
+  year = {2012},
+  edition = {2nd},
+  publisher = {Springer Science \& Business Media},
+  isbn = {978-3-642-23929-8},
+  doi = {10.1007/978-3-642-23929-8}
+}
+
+@book{leung2004handbook,
+  title = {Handbook of Scheduling: Algorithms, Models, and Performance Analysis},
+  author = {Leung, Joseph Y-T.},
+  year = {2004},
+  publisher = {CRC Press},
+  isbn = {978-1-58488-397-5}
+}
+
+% ============================================================================
+% Multiprocessor and Distributed Scheduling
+% ============================================================================
+
+@article{carpenter1989multiprocessor,
+  title = {A Categorization of Real-Time Multiprocessor Scheduling Problems and Algorithms},
+  author = {Carpenter, Jennifer and Funk, Shelby and Holman, Philip and Srinivasan, Anand and Anderson, James and Baruah, Sanjoy},
+  journal = {Handbook of Scheduling: Algorithms, Models, and Performance Analysis},
+  volume = {30},
+  pages = {1--19},
+  year = {2004},
+  publisher = {CRC Press}
+}
+
+@inproceedings{horn1974some,
+  title = {Some Simple Scheduling Algorithms},
+  author = {Horn, W. A.},
+  booktitle = {Naval Research Logistics Quarterly},
+  volume = {21},
+  number = {1},
+  pages = {177--185},
+  year = {1974},
+  publisher = {Wiley Online Library},
+  doi = {10.1002/nav.3800210113}
+}
+
+% ============================================================================
+% Fairness and Quality of Service
+% ============================================================================
+
+@article{goyal1996start,
+  title = {Start-Time Fair Queuing: A Scheduling Algorithm for Integrated Services Packet Switching Networks},
+  author = {Goyal, Pawan and Vin, Harrick M. and Cheng, Haichen},
+  journal = {IEEE/ACM Transactions on Networking},
+  volume = {5},
+  number = {5},
+  pages = {690--704},
+  year = {1997},
+  publisher = {IEEE},
+  doi = {10.1109/90.649569}
+}
+
+@article{demers1989analysis,
+  title = {Analysis and Simulation of a Fair Queueing Algorithm},
+  author = {Demers, Alan and Keshav, Srinivasan and Shenker, Scott},
+  journal = {ACM SIGCOMM Computer Communication Review},
+  volume = {19},
+  number = {4},
+  pages = {1--12},
+  year = {1989},
+  publisher = {ACM New York, NY, USA},
+  doi = {10.1145/75247.75248}
+}
+
+% ============================================================================
+% Scheduling in Cloud Computing and Container Orchestration
+% ============================================================================
+
+@inproceedings{schwarzkopf2013omega,
+  title = {Omega: Flexible, Scalable Schedulers for Large Compute Clusters},
+  author = {Schwarzkopf, Malte and Konwinski, Andy and Abd-El-Malek, Michael and Wilkes, John},
+  booktitle = {Proceedings of the 8th ACM European Conference on Computer Systems},
+  pages = {351--364},
+  year = {2013},
+  doi = {10.1145/2465351.2465386},
+  note = {Google's Omega scheduler design}
+}
+
+@inproceedings{verma2015large,
+  title = {Large-Scale Cluster Management at Google with Borg},
+  author = {Verma, Abhishek and Pedrosa, Luis and Korupolu, Madhukar and Oppenheimer, David and Tune, Eric and Wilkes, John},
+  booktitle = {Proceedings of the Tenth European Conference on Computer Systems},
+  pages = {1--17},
+  year = {2015},
+  doi = {10.1145/2741948.2741964},
+  note = {Google Borg cluster management system}
+}
+
+@inproceedings{burns2016borg,
+  title = {Borg, Omega, and Kubernetes},
+  author = {Burns, Brendan and Grant, Brian and Oppenheimer, David and Brewer, Eric and Wilkes, John},
+  journal = {Communications of the ACM},
+  volume = {59},
+  number = {5},
+  pages = {50--57},
+  year = {2016},
+  publisher = {ACM New York, NY, USA},
+  doi = {10.1145/2898442.2898444},
+  note = {Evolution from Borg to Kubernetes}
+}
+
+% ============================================================================
+% Manufacturing and Job Shop Scheduling
+% ============================================================================
+
+@article{pinedo2005planning,
+  title = {Planning and Scheduling in Manufacturing and Services},
+  author = {Pinedo, Michael L.},
+  journal = {Springer},
+  year = {2005},
+  publisher = {Springer},
+  isbn = {978-0-387-22198-2}
+}
+
+@article{haupt1989survey,
+  title = {A Survey of Priority Rule-Based Scheduling},
+  author = {Haupt, Robert},
+  journal = {Operations Research Spektrum},
+  volume = {11},
+  number = {1},
+  pages = {3--16},
+  year = {1989},
+  publisher = {Springer},
+  doi = {10.1007/BF01721162}
+}
+
+% ============================================================================
+% Discrete-Event Simulation Frameworks
+% ============================================================================
+
+@misc{simpy2021,
+  title = {SimPy: Discrete Event Simulation for Python},
+  author = {{Team SimPy}},
+  year = {2021},
+  url = {https://simpy.readthedocs.io/},
+  note = {Python discrete-event simulation library}
+}
+
+@inproceedings{varga2008overview,
+  title = {An Overview of the OMNeT++ Simulation Environment},
+  author = {Varga, Andr{\'a}s and Hornig, Rudolf},
+  booktitle = {Proceedings of the 1st International Conference on Simulation Tools and Techniques for Communications, Networks and Systems \& Workshops},
+  pages = {60},
+  year = {2008},
+  organization = {ICST},
+  note = {OMNeT++ discrete-event simulator}
+}
+
+% ============================================================================
+% Machine Learning for Scheduling
+% ============================================================================
+
+@inproceedings{mao2016resource,
+  title = {Resource Management with Deep Reinforcement Learning},
+  author = {Mao, Hongzi and Alizadeh, Mohammad and Menache, Ishai and Kandula, Srikanth},
+  booktitle = {Proceedings of the 15th ACM Workshop on Hot Topics in Networks},
+  pages = {50--56},
+  year = {2016},
+  doi = {10.1145/3005745.3005750},
+  note = {Deep RL for cluster scheduling}
+}
+
+@article{zhang2020deep,
+  title = {Deep Reinforcement Learning for Job Scheduling in Cloud Computing},
+  author = {Zhang, Weijia and Wang, Zheng and Wang, Jizhou and Wu, Chunming and Li, Jian},
+  journal = {IEEE Transactions on Cloud Computing},
+  year = {2020},
+  publisher = {IEEE},
+  doi = {10.1109/TCC.2020.3042252}
+}
+
+% ============================================================================
+% Algorithms and Complexity Theory
+% ============================================================================
+
+@book{cormen2009introduction,
+  title = {Introduction to Algorithms},
+  author = {Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford},
+  year = {2009},
+  edition = {3rd},
+  publisher = {MIT Press},
+  isbn = {978-0-262-03384-8},
+  note = {Standard algorithms textbook including scheduling algorithms}
+}
+
+@book{kleinberg2006algorithm,
+  title = {Algorithm Design},
+  author = {Kleinberg, Jon and Tardos, {\'E}va},
+  year = {2006},
+  publisher = {Pearson Education},
+  isbn = {978-0-321-29535-4}
+}
+
+% ============================================================================
+% Stochastic and Online Scheduling
+% ============================================================================
+
+@article{dertouzos1989control,
+  title = {Control Robotics: The Procedural Control of Physical Processes},
+  author = {Dertouzos, Michael L. and Mok, Aloysius Ka-Lau},
+  journal = {IFIP Congress},
+  volume = {89},
+  pages = {807--813},
+  year = {1989},
+  note = {Earliest deadline first analysis}
+}
+
+@article{motwani1994nonclairvoyant,
+  title = {Nonclairvoyant Scheduling},
+  author = {Motwani, Rajeev and Phillips, Steven and Torng, Eric},
+  journal = {Theoretical Computer Science},
+  volume = {130},
+  number = {1},
+  pages = {17--47},
+  year = {1994},
+  publisher = {Elsevier},
+  doi = {10.1016/0304-3975(94)90151-1}
+}
+
+% ============================================================================
+% Performance Analysis and Metrics
+% ============================================================================
+
+@article{jain1991art,
+  title = {The Art of Computer Systems Performance Analysis: Techniques for Experimental Design, Measurement, Simulation, and Modeling},
+  author = {Jain, Raj},
+  year = {1991},
+  publisher = {John Wiley \& Sons},
+  isbn = {978-0-471-50336-1},
+  note = {Classic text on performance analysis methodology}
+}
+
+@book{lilja2005measuring,
+  title = {Measuring Computer Performance: A Practitioner's Guide},
+  author = {Lilja, David J.},
+  year = {2005},
+  publisher = {Cambridge University Press},
+  isbn = {978-0-521-64670-8},
+  doi = {10.1017/CBO9780511814808}
+}
+
+% ============================================================================
+% Quality of Service and Real-Time Systems
+% ============================================================================
+
+@book{kopetz2011real,
+  title = {Real-Time Systems: Design Principles for Distributed Embedded Applications},
+  author = {Kopetz, Hermann},
+  year = {2011},
+  edition = {2nd},
+  publisher = {Springer Science \& Business Media},
+  isbn = {978-1-4419-8237-7},
+  doi = {10.1007/978-1-4419-8237-7}
+}
+
+@article{stankovic1988misconceptions,
+  title = {Misconceptions About Real-Time Computing: A Serious Problem for Next-Generation Systems},
+  author = {Stankovic, John A.},
+  journal = {Computer},
+  volume = {21},
+  number = {10},
+  pages = {10--19},
+  year = {1988},
+  publisher = {IEEE},
+  doi = {10.1109/2.7053}
+}
+
+% ============================================================================
+% Multi-Objective Optimization
+% ============================================================================
+
+@article{deb2002fast,
+  title = {A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II},
+  author = {Deb, Kalyanmoy and Pratap, Amrit and Agarwal, Sameer and Meyarivan, TAMT},
+  journal = {IEEE Transactions on Evolutionary Computation},
+  volume = {6},
+  number = {2},
+  pages = {182--197},
+  year = {2002},
+  publisher = {IEEE},
+  doi = {10.1109/4235.996017},
+  note = {NSGA-II for multi-objective optimization, applicable to scheduling}
+}
+
+@book{coello2007evolutionary,
+  title = {Evolutionary Algorithms for Solving Multi-Objective Problems},
+  author = {Coello, Carlos A. Coello and Lamont, Gary B. and Van Veldhuizen, David A.},
+  year = {2007},
+  edition = {2nd},
+  publisher = {Springer},
+  isbn = {978-0-387-36797-2},
+  doi = {10.1007/978-0-387-36797-2}
+}
+
+% ============================================================================
+% Additional Resources
+% ============================================================================
+
+@misc{kubernetes2024,
+  title = {Kubernetes Scheduler},
+  author = {{Kubernetes Authors}},
+  year = {2024},
+  url = {https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/},
+  note = {Official Kubernetes scheduler documentation}
+}
+
+@misc{python_heapq,
+  title = {heapq --- Heap Queue Algorithm},
+  author = {{Python Software Foundation}},
+  year = {2024},
+  url = {https://docs.python.org/3/library/heapq.html},
+  note = {Python priority queue implementation used in PySchedule}
+}
+
+% ============================================================================
+% Business and Market Analysis (for commercial applications)
+% ============================================================================
+
+@book{christensen2016innovators,
+  title = {The Innovator's Dilemma: When New Technologies Cause Great Firms to Fail},
+  author = {Christensen, Clayton M.},
+  year = {2016},
+  publisher = {Harvard Business Review Press},
+  isbn = {978-1-63369-178-9},
+  note = {Jobs-to-be-done framework applied in customer discovery}
+}
+
+@book{kim2015blue,
+  title = {Blue Ocean Strategy: How to Create Uncontested Market Space and Make the Competition Irrelevant},
+  author = {Kim, W. Chan and Mauborgne, Ren{\'e}e},
+  year = {2015},
+  edition = {Expanded},
+  publisher = {Harvard Business Review Press},
+  isbn = {978-1-62527-449-0},
+  note = {Blue Ocean positioning strategy for PySchedule business model}
+}
+
+% ============================================================================
+% End of Bibliography
+% ============================================================================
