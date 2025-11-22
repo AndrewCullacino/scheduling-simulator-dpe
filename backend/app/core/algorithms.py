@@ -129,6 +129,71 @@ class MaxMin_Scheduler(Scheduler):
         return max(ready_tasks, key=lambda t: t.processing_time)
 
 
+class FCFS_Scheduler(Scheduler):
+    """
+    First Come First Served (FCFS)
+
+    Simple non-preemptive algorithm that schedules tasks in order of arrival.
+    Fair but can lead to convoy effect (short tasks waiting for long ones).
+    """
+
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
+        if not ready_tasks:
+            return None
+        # Select the task with the earliest arrival time
+        # Tie-break with ID to ensure stability
+        return min(ready_tasks, key=lambda t: (t.arrival_time, t.id))
+
+
+class HRRN_Scheduler(Scheduler):
+    """
+    Highest Response Ratio Next (HRRN)
+
+    Response Ratio = (Waiting Time + Service Time) / Service Time
+                   = 1 + (Waiting Time / Service Time)
+
+    Favors tasks that have waited longer, preventing starvation while still
+    giving preference to shorter tasks.
+    """
+
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
+        if not ready_tasks:
+            return None
+
+        def response_ratio(task: Task) -> float:
+            waiting_time = self.current_time - task.arrival_time
+            # Avoid division by zero if processing_time is 0 (though unlikely)
+            service_time = max(task.processing_time, 0.0001)
+            return (waiting_time + service_time) / service_time
+
+        # Select task with highest response ratio
+        return max(ready_tasks, key=response_ratio)
+
+
+class MLF_Scheduler(Scheduler):
+    """
+    Minimum Laxity First (MLF)
+
+    Laxity = (Deadline - Current Time) - Remaining Processing Time
+
+    Selects the task with the least laxity (slack time).
+    Optimal for real-time systems but can cause frequent context switches
+    (though this simulator is non-preemptive per task execution).
+    """
+
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
+        if not ready_tasks:
+            return None
+
+        def get_laxity(task: Task) -> float:
+            # For non-preemptive, remaining time is just processing time
+            # since we only select tasks that haven't started.
+            return (task.deadline - self.current_time) - task.processing_time
+
+        # Select task with minimum laxity
+        return min(ready_tasks, key=get_laxity)
+
+
 # Algorithm registry for experiment runner
 AVAILABLE_ALGORITHMS = {
     'SPT': SPT_Scheduler,
@@ -139,6 +204,9 @@ AVAILABLE_ALGORITHMS = {
     'DPE (α=0.5)': lambda t, m: DPE_Scheduler(t, m, alpha=0.5),
     'DPE (α=0.7)': lambda t, m: DPE_Scheduler(t, m, alpha=0.7),
     'DPE (α=0.9)': lambda t, m: DPE_Scheduler(t, m, alpha=0.9),
+    'FCFS': FCFS_Scheduler,
+    'HRRN': HRRN_Scheduler,
+    'MLF': MLF_Scheduler,
 }
 
 

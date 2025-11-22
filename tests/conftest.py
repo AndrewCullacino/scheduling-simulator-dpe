@@ -11,8 +11,8 @@ from pathlib import Path
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from simple_simulator import Task, Priority, Machine, Scheduler
-from algorithms import SPT_Scheduler, EDF_Scheduler, PriorityFirst_Scheduler, DPE_Scheduler
+from backend.app.core.simulator import Task, Priority, Machine, Scheduler
+from backend.app.core.algorithms import SPT_Scheduler, EDF_Scheduler, PriorityFirst_Scheduler, DPE_Scheduler
 
 
 # =============================================================================
