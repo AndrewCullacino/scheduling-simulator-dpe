@@ -109,7 +109,9 @@ def run_simulation(request: schemas.SimulationRequest):
             start_time=t["start_time"],
             completion_time=t["completion_time"],
             deadline=t["deadline"],
-            meets_deadline=t["meets_deadline"]
+            meets_deadline=t["meets_deadline"],
+            cpu_required=t["cpu_required"],
+            ram_required=t["ram_required"]
         ) for t in results["tasks"]
     ]
     
