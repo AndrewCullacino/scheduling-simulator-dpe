@@ -54,7 +54,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ result }) => {
                                             left: `${(task.start_time! / maxTime) * 100}%`,
                                             width: `${((task.completion_time! - task.start_time!) / maxTime) * 100}%`,
                                         }}
-                                        title={`Task ${task.id} (${task.priority})\nStart: ${task.start_time}\nEnd: ${task.completion_time}`}
+                                        title={`Task ${task.id} (${task.priority})\nStart: ${task.start_time}\nEnd: ${task.completion_time}\nCPU: ${task.cpu_required}, RAM: ${task.ram_required}GB`}
                                     >
                                         T{task.id}
                                     </div>

@@ -3,12 +3,18 @@
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Version](https://img.shields.io/badge/Version-2.0.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://scheduling-simulator-dpe.vercel.app/)
 
 A professional-grade real-time scheduling simulation platform. Visualize and analyze scheduling algorithms (SPT, EDF, Priority-First, DPE) with a modern interactive dashboard.
 
+## 🌐 Live Demo
+
+- **Frontend Dashboard**: [https://scheduling-simulator-dpe.vercel.app/](https://scheduling-simulator-dpe.vercel.app/)
+- **Backend API**: [https://scheduling-simulator-backend.onrender.com/docs](https://scheduling-simulator-backend.onrender.com/docs)
+
 ## 🚀 Quick Start
 
-The easiest way to run the simulator is using the provided startup script.
+The easiest way to run the simulator locally is using the provided startup script.
 
 ### Option 1: One-Click Run (Recommended)
 ```bash
@@ -66,7 +72,8 @@ The project follows a modern microservices architecture:
 
 ## 📚 Documentation
 
-- [API Documentation](http://localhost:8000/docs) (Swagger UI)
+- [User Guide](docs/USER_GUIDE.md) - Detailed instructions on how to use the simulator.
+- [API Documentation](https://scheduling-simulator-backend.onrender.com/docs) (Swagger UI)
 - [Simulation Logic](backend/app/core/simulator.py)
 - [Test Scenarios](backend/app/core/scenarios.py)
 

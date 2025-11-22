@@ -12,6 +12,8 @@ class TaskInput(BaseModel):
     processing_time: float
     priority: PriorityEnum
     deadline: float
+    cpu_required: int = 1
+    ram_required: int = 1
 
 class SimulationRequest(BaseModel):
     algorithm: str
@@ -35,6 +37,8 @@ class TaskResult(BaseModel):
     completion_time: Optional[float]
     deadline: float
     meets_deadline: bool
+    cpu_required: int
+    ram_required: int
 
 class PriorityStats(BaseModel):
     total: int

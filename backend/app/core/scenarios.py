@@ -34,8 +34,57 @@ def get_all_scenarios() -> List[Dict[str, Any]]:
         get_challenge_scenarios() +
         get_extreme_scenarios() +
         get_advanced_scenarios() +
-        get_new_experiments()
+        get_new_experiments() +
+        get_cloud_scenarios()
     )
+
+
+def get_cloud_scenarios() -> List[Dict[str, Any]]:
+    """
+    Define Cloud/Cluster scheduling scenarios with resource constraints.
+    """
+    scenarios = []
+
+    # Cloud 1: Mixed Workload (CPU vs Memory Bound)
+    scenarios.append({
+        'name': 'Cloud 1: CPU vs Memory Bound',
+        'description': 'Mix of CPU-heavy (AI Training) and RAM-heavy (Database) tasks',
+        'tasks': [
+            # CPU Bound (High CPU, Low RAM)
+            Task(1, 0, 5, Priority.HIGH, 20, cpu_required=4, ram_required=2),
+            Task(2, 0, 5, Priority.HIGH, 20, cpu_required=4, ram_required=2),
+            Task(3, 0, 5, Priority.HIGH, 20, cpu_required=4, ram_required=2),
+            
+            # Memory Bound (Low CPU, High RAM)
+            Task(4, 2, 4, Priority.LOW, 25, cpu_required=1, ram_required=8),
+            Task(5, 2, 4, Priority.LOW, 25, cpu_required=1, ram_required=8),
+            Task(6, 2, 4, Priority.LOW, 25, cpu_required=1, ram_required=8),
+            
+            # Small Tasks (Fit anywhere)
+            Task(7, 5, 2, Priority.LOW, 30, cpu_required=1, ram_required=1),
+            Task(8, 5, 2, Priority.LOW, 30, cpu_required=1, ram_required=1),
+        ],
+        'num_machines': 4 # 2 Large (8CPU/32GB), 2 Small (4CPU/8GB)
+    })
+
+    # Cloud 2: Fragmentation Test
+    scenarios.append({
+        'name': 'Cloud 2: Resource Fragmentation',
+        'description': 'Large tasks blocked by small tasks consuming capacity',
+        'tasks': [
+            # Large Task (Needs full Large Machine)
+            Task(1, 0, 10, Priority.HIGH, 50, cpu_required=8, ram_required=16),
+            
+            # Many Small Tasks (Fill up slots)
+            Task(2, 0, 2, Priority.LOW, 10, cpu_required=2, ram_required=2),
+            Task(3, 0, 2, Priority.LOW, 10, cpu_required=2, ram_required=2),
+            Task(4, 0, 2, Priority.LOW, 10, cpu_required=2, ram_required=2),
+            Task(5, 0, 2, Priority.LOW, 10, cpu_required=2, ram_required=2),
+        ],
+        'num_machines': 2
+    })
+
+    return scenarios
 
 
 def get_simple_scenarios() -> List[Dict[str, Any]]:

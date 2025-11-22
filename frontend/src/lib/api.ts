@@ -8,6 +8,8 @@ export interface TaskInput {
     processing_time: number;
     priority: 'HIGH' | 'LOW';
     deadline: number;
+    cpu_required: number;
+    ram_required: number;
 }
 
 export interface SimulationRequest {
@@ -34,6 +36,8 @@ export interface TaskResult {
     completion_time: number | null;
     deadline: number;
     meets_deadline: boolean;
+    cpu_required: number;
+    ram_required: number;
 }
 
 export interface PriorityStats {

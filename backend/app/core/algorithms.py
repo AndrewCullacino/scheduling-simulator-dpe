@@ -113,11 +113,28 @@ class DPE_Scheduler(Scheduler):
                   key=lambda t: (self.get_effective_priority(t).value, t.deadline))
 
 
+class MaxMin_Scheduler(Scheduler):
+    """
+    Max-Min Fairness (Heuristic)
+
+    Selects the task with the longest processing time among compatible tasks.
+    In a cloud context, this can help clear large jobs when resources are available,
+    preventing them from being delayed indefinitely by small jobs (fragmentation).
+    """
+
+    def select_task(self, ready_tasks: List[Task]) -> Optional[Task]:
+        if not ready_tasks:
+            return None
+        # Select the task with the maximum processing time (Longest Job First)
+        return max(ready_tasks, key=lambda t: t.processing_time)
+
+
 # Algorithm registry for experiment runner
 AVAILABLE_ALGORITHMS = {
     'SPT': SPT_Scheduler,
     'EDF': EDF_Scheduler,
     'Priority-First': PriorityFirst_Scheduler,
+    'Max-Min (Cloud)': MaxMin_Scheduler,
     'DPE (α=0.3)': lambda t, m: DPE_Scheduler(t, m, alpha=0.3),
     'DPE (α=0.5)': lambda t, m: DPE_Scheduler(t, m, alpha=0.5),
     'DPE (α=0.7)': lambda t, m: DPE_Scheduler(t, m, alpha=0.7),

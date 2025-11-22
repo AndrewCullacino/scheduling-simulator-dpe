@@ -29,6 +29,8 @@ class Task:
         processing_time: Time required to complete task
         priority: Task priority level (HIGH or LOW)
         deadline: Time by which task must complete
+        cpu_required: Number of CPU cores required
+        ram_required: Amount of RAM required (GB)
         start_time: Actual start time (set during simulation)
         completion_time: Actual completion time (set during simulation)
         machine_id: Machine assignment (set during simulation)
@@ -38,6 +40,8 @@ class Task:
     processing_time: float
     priority: Priority
     deadline: float
+    cpu_required: int = 1
+    ram_required: int = 1
 
     # Scheduling state (filled during simulation)
     start_time: Optional[float] = None
@@ -90,9 +94,13 @@ class Machine:
     Attributes:
         id: Unique machine identifier
         available_at: Time when machine becomes available
+        cpu_capacity: Total CPU cores available
+        ram_capacity: Total RAM available (GB)
     """
     id: int
     available_at: float = 0.0
+    cpu_capacity: int = 8
+    ram_capacity: int = 16
 
     def is_idle(self, current_time: float) -> bool:
         """
@@ -105,6 +113,10 @@ class Machine:
             True if machine is idle, False if busy
         """
         return current_time >= self.available_at
+
+    def can_fit(self, task: Task) -> bool:
+        """Check if machine has enough resources for the task."""
+        return self.cpu_capacity >= task.cpu_required and self.ram_capacity >= task.ram_required
 
 
 class Event:
@@ -148,7 +160,17 @@ class Scheduler:
     def __init__(self, tasks: List[Task], num_machines: int):
         self.all_tasks = tasks
         self.num_machines = num_machines
-        self.machines = [Machine(i) for i in range(num_machines)]
+        # Create heterogeneous machines for variety if num_machines > 1
+        self.machines = []
+        for i in range(num_machines):
+            # Alternating machine types
+            if i % 2 == 0:
+                # Large machine
+                self.machines.append(Machine(i, cpu_capacity=8, ram_capacity=32))
+            else:
+                # Small machine
+                self.machines.append(Machine(i, cpu_capacity=4, ram_capacity=8))
+                
         self.event_queue: List[Event] = []
         self.ready_queue: List[Task] = []
         self.current_time = 0.0
@@ -207,7 +229,7 @@ class Scheduler:
                             "time": self.current_time,
                             "event": "ARRIVAL",
                             "task_id": evt.task.id,
-                            "message": f"Task {evt.task.id} arrives"
+                            "message": f"Task {evt.task.id} arrives (Needs {evt.task.cpu_required}CPU, {evt.task.ram_required}GB)"
                         })
 
                     elif evt.type == 'COMPLETION':
@@ -231,43 +253,55 @@ class Scheduler:
     def schedule_ready_tasks(self) -> List[Dict]:
         """Assign ready tasks to idle machines using selection strategy."""
         logs = []
-        while self.ready_queue:
-            # Find idle machine
-            idle_machine = None
-            for machine in self.machines:
-                if machine.is_idle(self.current_time):
-                    idle_machine = machine
-                    break
-
-            if idle_machine is None:
-                break  # No idle machines
-
-            # Select task using strategy
-            selected_task = self.select_task(self.ready_queue)
-            if selected_task is None:
+        
+        # We need to iterate until we can't schedule any more tasks
+        # or run out of idle machines
+        
+        # Get all idle machines
+        idle_machines = [m for m in self.machines if m.is_idle(self.current_time)]
+        
+        # Sort machines by capacity (smallest first) to save big machines for big tasks?
+        # Or just arbitrary order. Let's sort by ID.
+        idle_machines.sort(key=lambda m: m.id)
+        
+        for machine in idle_machines:
+            if not self.ready_queue:
                 break
+                
+            # Filter ready tasks that fit on this machine
+            compatible_tasks = [t for t in self.ready_queue if machine.can_fit(t)]
+            
+            if not compatible_tasks:
+                continue # No tasks fit this machine
+                
+            # Select task using strategy from COMPATIBLE tasks
+            selected_task = self.select_task(compatible_tasks)
+            
+            if selected_task is None:
+                continue
 
             # Schedule task on machine
             self.ready_queue.remove(selected_task)
             selected_task.start_time = self.current_time
-            selected_task.machine_id = idle_machine.id
+            selected_task.machine_id = machine.id
 
             completion_time = self.current_time + selected_task.processing_time
-            idle_machine.available_at = completion_time
+            machine.available_at = completion_time
 
             # Add completion event
             heapq.heappush(self.event_queue,
                           Event(completion_time, 'COMPLETION',
-                               selected_task, idle_machine))
+                                selected_task, machine))
 
             logs.append({
                 "time": self.current_time,
                 "event": "START",
                 "task_id": selected_task.id,
-                "machine_id": idle_machine.id,
+                "machine_id": machine.id,
                 "completion_time": completion_time,
-                "message": f"Task {selected_task.id} starts on Machine {idle_machine.id} (completes at {completion_time:.1f})"
+                "message": f"Task {selected_task.id} starts on Machine {machine.id} (completes at {completion_time:.1f})"
             })
+            
         return logs
     
     def get_results(self) -> Dict:
@@ -289,7 +323,9 @@ class Scheduler:
                 "start_time": task.start_time,
                 "completion_time": task.completion_time,
                 "deadline": task.deadline,
-                "meets_deadline": task.meets_deadline()
+                "meets_deadline": task.meets_deadline(),
+                "cpu_required": task.cpu_required,
+                "ram_required": task.ram_required
             })
 
         return {
