@@ -10,7 +10,7 @@ All scheduling algorithms consolidated in one file:
 """
 
 from typing import List, Optional, Dict, Type
-from simple_simulator import Scheduler, Priority, Task
+from .simulator import Scheduler, Priority, Task
 
 
 class SPT_Scheduler(Scheduler):
@@ -98,7 +98,7 @@ class DPE_Scheduler(Scheduler):
         pressure = task.deadline_pressure(self.current_time)
 
         if pressure > self.alpha:
-            print(f"  📈 Task {task.id} elevated! (pressure={pressure:.2f} > {self.alpha})")
+            # print(f"  📈 Task {task.id} elevated! (pressure={pressure:.2f} > {self.alpha})")
             return Priority.HIGH
 
         return Priority.LOW

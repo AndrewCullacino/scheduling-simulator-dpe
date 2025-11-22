@@ -15,7 +15,7 @@ Date: 2024
 """
 
 from typing import Dict, List, Any
-from simple_simulator import Task, Priority
+from .simulator import Task, Priority
 
 
 def get_all_scenarios() -> List[Dict[str, Any]]:
