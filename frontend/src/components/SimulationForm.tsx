@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import { api, AlgorithmInfo, ScenarioInfo, SimulationRequest, TaskInput } from '../lib/api';
 import TaskBuilder from './TaskBuilder';
@@ -90,16 +92,16 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ onRun, loading }) => {
 
     return (
         <div className="space-y-6">
-            <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-xl space-y-4">
-                <h2 className="text-xl font-bold mb-4 text-white">Configuration</h2>
+            <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl border border-gray-200 shadow-xl space-y-4">
+                <h2 className="text-xl font-bold mb-4 text-gray-800">Configuration</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Algorithm</label>
+                        <label className="block text-sm font-medium text-gray-700">Algorithm</label>
                         <select
                             value={selectedAlgo}
                             onChange={(e) => setSelectedAlgo(e.target.value)}
-                            className="mt-1 block w-full rounded-lg bg-black/40 border border-white/10 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
+                            className="mt-1 block w-full rounded-lg bg-gray-50 border border-gray-300 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
                         >
                             {algorithms.map(algo => (
                                 <option key={algo.id} value={algo.id}>{algo.name}</option>
@@ -111,11 +113,11 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ onRun, loading }) => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Scenario</label>
+                        <label className="block text-sm font-medium text-gray-700">Scenario</label>
                         <select
                             value={selectedScenario}
                             onChange={handleScenarioChange}
-                            className="mt-1 block w-full rounded-lg bg-black/40 border border-white/10 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
+                            className="mt-1 block w-full rounded-lg bg-gray-50 border border-gray-300 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
                         >
                             {scenarios.map(s => (
                                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -129,20 +131,20 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ onRun, loading }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-300">Number of Machines</label>
+                        <label className="block text-sm font-medium text-gray-700">Number of Machines</label>
                         <input
                             type="number"
                             min="1"
                             max="10"
                             value={numMachines}
                             onChange={(e) => setNumMachines(parseInt(e.target.value))}
-                            className="mt-1 block w-full rounded-lg bg-black/40 border border-white/10 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
+                            className="mt-1 block w-full rounded-lg bg-gray-50 border border-gray-300 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
                         />
                     </div>
 
                     {selectedAlgo.includes('DPE') && (
                         <div>
-                            <label className="block text-sm font-medium text-gray-300">Alpha (DPE Threshold)</label>
+                            <label className="block text-sm font-medium text-gray-700">Alpha (DPE Threshold)</label>
                             <input
                                 type="number"
                                 min="0"
@@ -150,7 +152,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ onRun, loading }) => {
                                 step="0.1"
                                 value={alpha}
                                 onChange={(e) => setAlpha(parseFloat(e.target.value))}
-                                className="mt-1 block w-full rounded-lg bg-black/40 border border-white/10 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
+                                className="mt-1 block w-full rounded-lg bg-gray-50 border border-gray-300 text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5"
                             />
                         </div>
                     )}
