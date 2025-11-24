@@ -5,7 +5,7 @@ import { api, AlgorithmInfo, ScenarioInfo, SimulationRequest, TaskInput } from '
 import TaskBuilder from './TaskBuilder';
 
 interface SimulationFormProps {
-    onRun: (data: SimulationRequest) => void;
+    onRun: (data: SimulationRequest, meta: { algoName: string, scenarioName: string }) => void;
     loading: boolean;
 }
 
@@ -69,6 +69,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ onRun, loading }) => {
         e.preventDefault();
 
         let tasksToRun: TaskInput[] = [];
+        let scenarioName = '';
 
         if (selectedScenario === 'custom') {
             if (customTasks.length === 0) {
@@ -76,17 +77,24 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ onRun, loading }) => {
                 return;
             }
             tasksToRun = customTasks;
+            scenarioName = 'Custom Scenario';
         } else {
             const scenario = scenarios.find(s => s.id === selectedScenario);
             if (!scenario) return;
             tasksToRun = scenario.tasks;
+            scenarioName = scenario.name;
         }
+
+        const algoName = algorithms.find(a => a.id === selectedAlgo)?.name || selectedAlgo;
 
         onRun({
             algorithm: selectedAlgo,
             num_machines: numMachines,
             tasks: tasksToRun,
             alpha: alpha
+        }, {
+            algoName,
+            scenarioName
         });
     };
 

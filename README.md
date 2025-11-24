@@ -19,37 +19,6 @@ The easiest way to run the simulator locally is using the provided startup scrip
 ### Option 1: One-Click Run (Recommended)
 ```bash
 ./start.sh
-```
-This script automatically detects your environment (Docker or Local) and launches the application.
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-
-### Option 2: Docker Compose
-If you have Docker installed:
-```bash
-docker-compose up --build
-```
-
-### Option 3: Manual Setup
-**Backend:**
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## ✨ Features
-
-- **Interactive Dashboard**: Real-time Gantt chart visualization of task execution.
-- **Algorithm Comparison**: Compare standard algorithms (SPT, EDF) with advanced research algorithms (DPE).
-- **Scenario Management**: 24 built-in scenarios ranging from simple tests to extreme stress conditions.
 - **Metrics Analysis**: Detailed breakdown of makespan, deadline misses, and priority handling.
 - **Modern Stack**: Built with Python FastAPI and Next.js (TypeScript/Tailwind).
 
